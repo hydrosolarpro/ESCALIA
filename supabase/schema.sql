@@ -59,6 +59,14 @@ $$;
 -- --- leads ---
 -- Cualquier visitante del sitio (anónimo) puede CREAR un lead (formularios públicos),
 -- pero solo los administradores pueden leer, editar o borrar.
+--
+-- NOTA para quien mantenga esto: un INSERT con RETURNING (p.ej. .insert(...).select()
+-- en supabase-js) exige ADEMÁS pasar la política de SELECT sobre la fila insertada
+-- (comportamiento estándar de RLS en Postgres). Como el SELECT de "leads" está
+-- restringido a admins, cualquier insert público debe hacerse SIN encadenar
+-- .select() — así lo hace WorkWithUsModal.tsx. Si se agrega .select() a un insert
+-- público, volverá a fallar con "new row violates row-level security policy"
+-- aunque el INSERT en sí sea válido.
 drop policy if exists "public can insert leads" on public.leads;
 create policy "public can insert leads"
   on public.leads for insert
