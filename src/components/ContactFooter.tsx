@@ -82,7 +82,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               </div>
 
               <a
-                href="https://wa.me/51960442025"
+                href="https://wa.me/51960442025?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 text-[#cbd5e1] hover:text-white transition-colors cursor-pointer group p-3 rounded-xl hover:bg-[#121214] border border-transparent hover:border-[#27272a]"

@@ -120,7 +120,7 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
                     </div>
 
                     <span className="font-mono-custom text-xs text-[#FBC02D] font-bold flex items-center gap-1 group-hover:translate-x-1.5 transition-transform shrink-0 ml-2">
-                      Detalles
+                      Casos de éxitos
                       <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </span>
                   </div>
