@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../lib/AuthContext';
 import { useLeads } from '../../hooks/useLeads';
 import { useRevenue } from '../../hooks/useRevenue';
+import { useSettings } from '../../hooks/useSettings';
 import { EscaliaLogo } from '../../components/EscaliaLogo';
 import { OverviewTab } from '../../components/admin/OverviewTab';
 import { LeadsTab } from '../../components/admin/LeadsTab';
@@ -21,6 +22,7 @@ export const Dashboard: React.FC = () => {
 
   const { leads, loading: leadsLoading, addLead, updateLead, updateLeadStatus, deleteLead } = useLeads();
   const { entries, loading: revenueLoading, addRevenue, updateRevenue, deleteRevenue } = useRevenue();
+  const { usdToPen, updateRate } = useSettings();
 
   const loading = leadsLoading || revenueLoading;
 
@@ -71,7 +73,9 @@ export const Dashboard: React.FC = () => {
           </div>
         ) : (
           <>
-            {activeTab === 'resumen' && <OverviewTab leads={leads} revenue={entries} />}
+            {activeTab === 'resumen' && (
+              <OverviewTab leads={leads} revenue={entries} usdToPen={usdToPen} updateRate={updateRate} />
+            )}
             {activeTab === 'leads' && (
               <LeadsTab
                 leads={leads}
@@ -82,7 +86,13 @@ export const Dashboard: React.FC = () => {
               />
             )}
             {activeTab === 'ingresos' && (
-              <RevenueTab entries={entries} addRevenue={addRevenue} updateRevenue={updateRevenue} deleteRevenue={deleteRevenue} />
+              <RevenueTab
+                entries={entries}
+                addRevenue={addRevenue}
+                updateRevenue={updateRevenue}
+                deleteRevenue={deleteRevenue}
+                usdToPen={usdToPen}
+              />
             )}
           </>
         )}

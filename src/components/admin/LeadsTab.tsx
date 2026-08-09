@@ -328,6 +328,7 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLead, 
               </select>
               <input
                 placeholder="Producto de interés"
+                maxLength={200}
                 value={form.product || ''}
                 onChange={(e) => setForm({ ...form, product: e.target.value })}
                 className="sm:col-span-2 bg-[#09090b] border border-[#27272a] rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-[#D32F2F]"

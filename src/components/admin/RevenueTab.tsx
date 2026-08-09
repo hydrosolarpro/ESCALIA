@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CHANNELS_DATA } from '../../data/channelsData';
 import { RevenueEntry, RevenueInsert } from '../../types';
 import { exportToExcel, exportToPdf } from '../../lib/exportUtils';
+import { Currency, convertAmount } from '../../lib/currency';
 
 interface RevenueTabProps {
   entries: RevenueEntry[];
   addRevenue: (entry: RevenueInsert) => Promise<{ error: string | null }>;
   updateRevenue: (id: string, updates: RevenueInsert) => Promise<{ error: string | null }>;
   deleteRevenue: (id: string) => Promise<{ error: string | null }>;
+  usdToPen: number;
 }
+
+const CURRENCY_PREFIX: Record<Currency, string> = { USD: '$', PEN: 'S/' };
 
 const emptyForm: RevenueInsert = {
   channel: '',
@@ -22,11 +26,12 @@ const emptyForm: RevenueInsert = {
 const currencyFmt = (n: number) =>
   n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, updateRevenue, deleteRevenue }) => {
+export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, updateRevenue, deleteRevenue, usdToPen }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<RevenueInsert>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [totalCurrency, setTotalCurrency] = useState<Currency>('USD');
 
   const openNewForm = () => {
     setForm(emptyForm);
@@ -74,7 +79,14 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, upd
       new Date(e.entry_date).toLocaleDateString('es-PE'),
     ]);
 
-  const total = entries.reduce((sum, e) => sum + Number(e.amount), 0);
+  const total = useMemo(
+    () =>
+      entries.reduce(
+        (sum, e) => sum + convertAmount(Number(e.amount), e.currency as Currency, totalCurrency, usdToPen),
+        0
+      ),
+    [entries, totalCurrency, usdToPen]
+  );
 
   return (
     <div className="space-y-6">
@@ -102,11 +114,28 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, upd
         </div>
       </div>
 
-      <div className="bg-[#121214] border border-[#27272a] rounded-xl p-5 flex items-center justify-between">
+      <div className="bg-[#121214] border border-[#27272a] rounded-xl p-5 flex items-center justify-between flex-wrap gap-4">
         <span className="font-mono-custom text-xs text-[#a1a1aa] uppercase tracking-wider font-bold">
-          Total Acumulado
+          Total Acumulado <span className="text-[#525252] normal-case font-normal">(convertido, montos en USD y PEN)</span>
         </span>
-        <span className="font-display text-2xl font-black text-emerald-400">${currencyFmt(total)}</span>
+        <div className="flex items-center gap-3">
+          <div className="flex bg-[#09090b] p-1 rounded-lg border border-[#27272a]">
+            {(['USD', 'PEN'] as Currency[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => setTotalCurrency(c)}
+                className={`px-2.5 py-1 rounded text-[11px] font-mono-custom font-bold transition-all ${
+                  totalCurrency === c ? 'bg-[#D32F2F] text-white shadow' : 'text-[#a1a1aa] hover:text-white'
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+          <span className="font-display text-2xl font-black text-emerald-400">
+            {CURRENCY_PREFIX[totalCurrency]}{currencyFmt(total)}
+          </span>
+        </div>
       </div>
 
       <div className="bg-[#121214] border border-[#27272a] rounded-xl overflow-x-auto">
