@@ -196,10 +196,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#D32F2F]/15 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/3 right-10 w-[500px] h-[500px] bg-[#F57C00]/15 rounded-full blur-[140px] pointer-events-none"></div>
 
-      <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
-        
+      <div className="max-w-[1280px] mx-auto w-full flex items-center relative z-10">
+
         {/* Hero Central Column with High Legibility & Visual Balance */}
-        <div className="max-w-4xl mx-auto space-y-8 relative z-20">
+        <div className="max-w-4xl mx-auto space-y-8 relative z-20 w-full">
           
           {/* Philosophy Quote Block (matching QuoteBanner format) */}
           <div className="bg-[#121215] border border-[#27272a] p-5 sm:p-6 rounded-2xl max-w-xl text-left shadow-2xl space-y-3 relative overflow-hidden">
@@ -486,10 +486,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
             </div>
           </div>
         </div>
-
-        {/* Removed duplicate right column block */}
-
-
       </div>
 
       {/* Fullscreen Interactive Nexus Showcase Modal */}

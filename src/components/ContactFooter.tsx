@@ -136,8 +136,8 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               </div>
 
               <h3 className="font-display text-2xl sm:text-3xl font-black text-white leading-tight">
-                Reserva tu Cita de <br className="hidden sm:inline" />
-                <span className="text-[#FBC02D]">Discovery (30 min)</span>
+                Reserva tu Cita de Discovery <br className="hidden sm:inline" />
+                <span className="text-[#FBC02D]">sin compromiso para ayudarte a crecer tu negocio</span>
               </h3>
 
               <p className="font-body text-sm sm:text-base text-[#cbd5e1] leading-relaxed">
@@ -207,6 +207,14 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               className="text-[#e4beba] hover:text-[#FBC02D] transition-colors"
             >
               LinkedIn
+            </a>
+            <a
+              href="https://wa.me/51960442025"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#e4beba] hover:text-[#FBC02D] transition-colors"
+            >
+              Trabaja con nosotros - experto en algún dominio
             </a>
             <a
               href="#contacto"

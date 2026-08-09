@@ -27,7 +27,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: 'Eliminación de fricciones operativas e integración de datos.',
     icon: 'precision_manufacturing',
     color: '#FBC02D',
-    span: 'md:col-span-2',
+    span: 'col-span-1',
     details: 'Sincronización de sistemas aislados, pipelines de datos automatizados, integración de pasarelas de pago y workflows multicanal.',
     capabilities: ['API Gateways', 'Webhook Ingestion', 'ERP & CRM Sync', 'Automated Workflows']
   },
