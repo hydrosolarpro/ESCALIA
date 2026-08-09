@@ -35,6 +35,19 @@ export const useRevenue = () => {
     return { error: insertError ? insertError.message : null };
   };
 
+  const updateRevenue = async (id: string, updates: RevenueInsert) => {
+    const { data, error: updateError } = await supabase
+      .from('revenue')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    if (!updateError && data) {
+      setEntries((prev) => prev.map((e) => (e.id === id ? (data as RevenueEntry) : e)));
+    }
+    return { error: updateError ? updateError.message : null };
+  };
+
   const deleteRevenue = async (id: string) => {
     const { error: deleteError } = await supabase.from('revenue').delete().eq('id', id);
     if (!deleteError) {
@@ -43,5 +56,5 @@ export const useRevenue = () => {
     return { error: deleteError ? deleteError.message : null };
   };
 
-  return { entries, loading, error, refetch: fetchRevenue, addRevenue, deleteRevenue };
+  return { entries, loading, error, refetch: fetchRevenue, addRevenue, updateRevenue, deleteRevenue };
 };

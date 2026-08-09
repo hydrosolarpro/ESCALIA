@@ -6,6 +6,7 @@ import { exportToExcel, exportToPdf } from '../../lib/exportUtils';
 interface RevenueTabProps {
   entries: RevenueEntry[];
   addRevenue: (entry: RevenueInsert) => Promise<{ error: string | null }>;
+  updateRevenue: (id: string, updates: RevenueInsert) => Promise<{ error: string | null }>;
   deleteRevenue: (id: string) => Promise<{ error: string | null }>;
 }
 
@@ -21,19 +22,44 @@ const emptyForm: RevenueInsert = {
 const currencyFmt = (n: number) =>
   n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, deleteRevenue }) => {
+export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, updateRevenue, deleteRevenue }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<RevenueInsert>(emptyForm);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const openNewForm = () => {
+    setForm(emptyForm);
+    setEditingId(null);
+    setShowForm(true);
+  };
+
+  const openEditForm = (entry: RevenueEntry) => {
+    setForm({
+      channel: entry.channel,
+      product: entry.product,
+      amount: entry.amount,
+      currency: entry.currency,
+      description: entry.description,
+      entry_date: entry.entry_date,
+    });
+    setEditingId(entry.id);
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingId(null);
+    setForm(emptyForm);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const { error } = await addRevenue(form);
+    const { error } = editingId ? await updateRevenue(editingId, form) : await addRevenue(form);
     setSaving(false);
     if (!error) {
-      setForm(emptyForm);
-      setShowForm(false);
+      closeForm();
     }
   };
 
@@ -68,7 +94,7 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, del
             <span className="material-symbols-outlined text-sm">grid_on</span> Excel
           </button>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={openNewForm}
             className="px-4 py-2 fire-gradient text-white text-xs font-mono-custom font-bold rounded-lg flex items-center gap-1.5 shadow-lg hover:brightness-110 transition-all"
           >
             <span className="material-symbols-outlined text-sm">add_circle</span> Registrar Ingreso
@@ -108,13 +134,22 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, del
                   {new Date(entry.entry_date).toLocaleDateString('es-PE')}
                 </td>
                 <td className="px-4 py-3">
-                  <button
-                    onClick={() => deleteRevenue(entry.id)}
-                    className="text-[#71717a] hover:text-[#FF3D3D] transition-colors"
-                    title="Eliminar"
-                  >
-                    <span className="material-symbols-outlined text-base">delete</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openEditForm(entry)}
+                      className="text-[#71717a] hover:text-[#FBC02D] transition-colors"
+                      title="Editar"
+                    >
+                      <span className="material-symbols-outlined text-base">edit</span>
+                    </button>
+                    <button
+                      onClick={() => deleteRevenue(entry.id)}
+                      className="text-[#71717a] hover:text-[#FF3D3D] transition-colors"
+                      title="Eliminar"
+                    >
+                      <span className="material-symbols-outlined text-base">delete</span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -137,12 +172,14 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, del
           >
             <button
               type="button"
-              onClick={() => setShowForm(false)}
+              onClick={closeForm}
               className="absolute top-4 right-4 text-[#e4beba] hover:text-white p-1"
             >
               <span className="material-symbols-outlined">close</span>
             </button>
-            <h3 className="font-display text-xl font-bold text-white">Registrar Ganancia</h3>
+            <h3 className="font-display text-xl font-bold text-white">
+              {editingId ? 'Editar Ganancia' : 'Registrar Ganancia'}
+            </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <select
@@ -201,7 +238,7 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, del
             <div className="pt-2 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={closeForm}
                 className="px-4 py-2 border border-[#2A2A2A] text-[#e4beba] font-mono-custom text-xs rounded hover:bg-[#1c1b1b]"
               >
                 Cancelar
@@ -211,7 +248,7 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, del
                 disabled={saving}
                 className="px-6 py-2 fire-gradient text-white font-mono-custom text-xs uppercase font-bold rounded hover:opacity-90 disabled:opacity-60"
               >
-                {saving ? 'Guardando…' : 'Guardar Ingreso'}
+                {saving ? 'Guardando…' : editingId ? 'Guardar Cambios' : 'Guardar Ingreso'}
               </button>
             </div>
           </form>

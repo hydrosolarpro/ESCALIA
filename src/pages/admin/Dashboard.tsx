@@ -19,8 +19,8 @@ export const Dashboard: React.FC = () => {
   const { session, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState<TabId>('resumen');
 
-  const { leads, loading: leadsLoading, addLead, updateLeadStatus, deleteLead } = useLeads();
-  const { entries, loading: revenueLoading, addRevenue, deleteRevenue } = useRevenue();
+  const { leads, loading: leadsLoading, addLead, updateLead, updateLeadStatus, deleteLead } = useLeads();
+  const { entries, loading: revenueLoading, addRevenue, updateRevenue, deleteRevenue } = useRevenue();
 
   const loading = leadsLoading || revenueLoading;
 
@@ -73,10 +73,16 @@ export const Dashboard: React.FC = () => {
           <>
             {activeTab === 'resumen' && <OverviewTab leads={leads} revenue={entries} />}
             {activeTab === 'leads' && (
-              <LeadsTab leads={leads} addLead={addLead} updateLeadStatus={updateLeadStatus} deleteLead={deleteLead} />
+              <LeadsTab
+                leads={leads}
+                addLead={addLead}
+                updateLead={updateLead}
+                updateLeadStatus={updateLeadStatus}
+                deleteLead={deleteLead}
+              />
             )}
             {activeTab === 'ingresos' && (
-              <RevenueTab entries={entries} addRevenue={addRevenue} deleteRevenue={deleteRevenue} />
+              <RevenueTab entries={entries} addRevenue={addRevenue} updateRevenue={updateRevenue} deleteRevenue={deleteRevenue} />
             )}
           </>
         )}

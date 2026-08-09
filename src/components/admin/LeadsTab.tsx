@@ -6,6 +6,7 @@ import { exportToExcel, exportToPdf } from '../../lib/exportUtils';
 interface LeadsTabProps {
   leads: Lead[];
   addLead: (lead: LeadInsert) => Promise<{ error: string | null }>;
+  updateLead: (id: string, updates: LeadInsert) => Promise<{ error: string | null }>;
   updateLeadStatus: (id: string, status: LeadStatus) => Promise<{ error: string | null }>;
   deleteLead: (id: string) => Promise<{ error: string | null }>;
 }
@@ -50,9 +51,10 @@ const emptyForm: LeadInsert = {
 const currencyFmt = (n: number) =>
   n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadStatus, deleteLead }) => {
+export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLead, updateLeadStatus, deleteLead }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<LeadInsert>(emptyForm);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [channelFilter, setChannelFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -65,14 +67,43 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
     [leads, channelFilter, statusFilter]
   );
 
+  const openNewForm = () => {
+    setForm(emptyForm);
+    setEditingId(null);
+    setShowForm(true);
+  };
+
+  const openEditForm = (lead: Lead) => {
+    setForm({
+      full_name: lead.full_name,
+      email: lead.email,
+      phone: lead.phone,
+      country: lead.country,
+      channel: lead.channel,
+      product: lead.product,
+      amount: lead.amount,
+      currency: lead.currency,
+      source: lead.source,
+      status: lead.status,
+      notes: lead.notes,
+    });
+    setEditingId(lead.id);
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingId(null);
+    setForm(emptyForm);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const { error } = await addLead(form);
+    const { error } = editingId ? await updateLead(editingId, form) : await addLead(form);
     setSaving(false);
     if (!error) {
-      setForm(emptyForm);
-      setShowForm(false);
+      closeForm();
     }
   };
 
@@ -110,7 +141,7 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
             <span className="material-symbols-outlined text-sm">grid_on</span> Excel
           </button>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={openNewForm}
             className="px-4 py-2 fire-gradient text-white text-xs font-mono-custom font-bold rounded-lg flex items-center gap-1.5 shadow-lg hover:brightness-110 transition-all"
           >
             <span className="material-symbols-outlined text-sm">person_add</span> Nuevo Lead
@@ -208,13 +239,22 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
                   {new Date(lead.created_at).toLocaleDateString('es-PE')}
                 </td>
                 <td className="px-4 py-3">
-                  <button
-                    onClick={() => deleteLead(lead.id)}
-                    className="text-[#71717a] hover:text-[#FF3D3D] transition-colors"
-                    title="Eliminar"
-                  >
-                    <span className="material-symbols-outlined text-base">delete</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openEditForm(lead)}
+                      className="text-[#71717a] hover:text-[#FBC02D] transition-colors"
+                      title="Editar"
+                    >
+                      <span className="material-symbols-outlined text-base">edit</span>
+                    </button>
+                    <button
+                      onClick={() => deleteLead(lead.id)}
+                      className="text-[#71717a] hover:text-[#FF3D3D] transition-colors"
+                      title="Eliminar"
+                    >
+                      <span className="material-symbols-outlined text-base">delete</span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -238,12 +278,14 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
           >
             <button
               type="button"
-              onClick={() => setShowForm(false)}
+              onClick={closeForm}
               className="absolute top-4 right-4 text-[#e4beba] hover:text-white p-1"
             >
               <span className="material-symbols-outlined">close</span>
             </button>
-            <h3 className="font-display text-xl font-bold text-white">Registrar Lead Manualmente</h3>
+            <h3 className="font-display text-xl font-bold text-white">
+              {editingId ? 'Editar Lead' : 'Registrar Lead Manualmente'}
+            </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
@@ -345,7 +387,7 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
             <div className="pt-2 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={closeForm}
                 className="px-4 py-2 border border-[#2A2A2A] text-[#e4beba] font-mono-custom text-xs rounded hover:bg-[#1c1b1b]"
               >
                 Cancelar
@@ -355,7 +397,7 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
                 disabled={saving}
                 className="px-6 py-2 fire-gradient text-white font-mono-custom text-xs uppercase font-bold rounded hover:opacity-90 disabled:opacity-60"
               >
-                {saving ? 'Guardando…' : 'Guardar Lead'}
+                {saving ? 'Guardando…' : editingId ? 'Guardar Cambios' : 'Guardar Lead'}
               </button>
             </div>
           </form>

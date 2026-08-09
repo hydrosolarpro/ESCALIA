@@ -43,6 +43,19 @@ export const useLeads = () => {
     return { error: updateError ? updateError.message : null };
   };
 
+  const updateLead = async (id: string, updates: LeadInsert) => {
+    const { data, error: updateError } = await supabase
+      .from('leads')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    if (!updateError && data) {
+      setLeads((prev) => prev.map((l) => (l.id === id ? (data as Lead) : l)));
+    }
+    return { error: updateError ? updateError.message : null };
+  };
+
   const deleteLead = async (id: string) => {
     const { error: deleteError } = await supabase.from('leads').delete().eq('id', id);
     if (!deleteError) {
@@ -51,5 +64,5 @@ export const useLeads = () => {
     return { error: deleteError ? deleteError.message : null };
   };
 
-  return { leads, loading, error, refetch: fetchLeads, addLead, updateLeadStatus, deleteLead };
+  return { leads, loading, error, refetch: fetchLeads, addLead, updateLead, updateLeadStatus, deleteLead };
 };
