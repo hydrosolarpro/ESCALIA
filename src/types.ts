@@ -62,6 +62,8 @@ export interface Lead {
   country: string | null;
   channel: string | null;
   product: string | null;
+  amount: number | null;
+  currency: string;
   source: LeadSource;
   status: LeadStatus;
   notes: string | null;

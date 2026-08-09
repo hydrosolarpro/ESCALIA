@@ -40,10 +40,15 @@ const emptyForm: LeadInsert = {
   country: '',
   channel: '',
   product: '',
+  amount: null,
+  currency: 'USD',
   source: 'manual',
   status: 'nuevo',
   notes: '',
 };
+
+const currencyFmt = (n: number) =>
+  n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadStatus, deleteLead }) => {
   const [showForm, setShowForm] = useState(false);
@@ -79,12 +84,13 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
       l.country || '',
       l.channel || '',
       l.product || '',
+      l.amount != null ? `${l.currency} ${currencyFmt(Number(l.amount))}` : '',
       SOURCE_LABELS[l.source] || l.source,
       STATUS_LABELS[l.status],
       new Date(l.created_at).toLocaleDateString('es-PE'),
     ]);
 
-  const COLUMNS = ['Nombre', 'Correo', 'Teléfono', 'País', 'Canal', 'Producto', 'Origen', 'Estado', 'Fecha'];
+  const COLUMNS = ['Nombre', 'Correo', 'Teléfono', 'País', 'Canal', 'Producto', 'Monto', 'Origen', 'Estado', 'Fecha'];
 
   return (
     <div className="space-y-6">
@@ -145,13 +151,14 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
 
       {/* Table */}
       <div className="bg-[#121214] border border-[#27272a] rounded-xl overflow-x-auto">
-        <table className="w-full text-left min-w-[900px]">
+        <table className="w-full text-left min-w-[1020px]">
           <thead>
             <tr className="border-b border-[#27272a] text-[11px] font-mono-custom text-[#a1a1aa] uppercase tracking-wider">
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Contacto</th>
               <th className="px-4 py-3">País</th>
               <th className="px-4 py-3">Canal / Producto</th>
+              <th className="px-4 py-3">Monto</th>
               <th className="px-4 py-3">Origen</th>
               <th className="px-4 py-3">Estado</th>
               <th className="px-4 py-3">Fecha</th>
@@ -170,6 +177,15 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
                 <td className="px-4 py-3 text-xs text-[#cbd5e1] whitespace-nowrap">
                   <div>{lead.channel || '—'}</div>
                   <div className="text-[#71717a]">{lead.product || '—'}</div>
+                </td>
+                <td className="px-4 py-3 text-sm font-bold whitespace-nowrap">
+                  {lead.amount != null ? (
+                    <span className={lead.status === 'ganado' ? 'text-emerald-400' : 'text-[#cbd5e1]'}>
+                      {lead.currency} {currencyFmt(Number(lead.amount))}
+                    </span>
+                  ) : (
+                    <span className="text-[#525252]">—</span>
+                  )}
                 </td>
                 <td className="px-4 py-3 text-xs text-[#cbd5e1] whitespace-nowrap">
                   {SOURCE_LABELS[lead.source] || lead.source}
@@ -204,7 +220,7 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-sm text-[#71717a]">
+                <td colSpan={9} className="px-4 py-10 text-center text-sm text-[#71717a]">
                   No hay leads que coincidan con los filtros.
                 </td>
               </tr>
@@ -274,6 +290,23 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
                 onChange={(e) => setForm({ ...form, product: e.target.value })}
                 className="sm:col-span-2 bg-[#09090b] border border-[#27272a] rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-[#D32F2F]"
               />
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Monto del producto (opcional)"
+                value={form.amount ?? ''}
+                onChange={(e) => setForm({ ...form, amount: e.target.value === '' ? null : parseFloat(e.target.value) })}
+                className="bg-[#09090b] border border-[#27272a] rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-[#D32F2F]"
+              />
+              <select
+                value={form.currency}
+                onChange={(e) => setForm({ ...form, currency: e.target.value })}
+                className="bg-[#09090b] border border-[#27272a] rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-[#D32F2F]"
+              >
+                <option value="USD">USD</option>
+                <option value="PEN">PEN</option>
+              </select>
               <select
                 value={form.source}
                 onChange={(e) => setForm({ ...form, source: e.target.value as Lead['source'] })}
@@ -304,6 +337,10 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLeadSt
                 className="sm:col-span-2 bg-[#09090b] border border-[#27272a] rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-[#D32F2F] resize-none"
               />
             </div>
+
+            <p className="font-mono-custom text-[11px] text-[#71717a] leading-relaxed">
+              El monto se suma a "Ganancias Totales" y a las gráficas del Resumen únicamente cuando el estado del lead es <span className="text-emerald-400 font-bold">Ganado</span>.
+            </p>
 
             <div className="pt-2 flex justify-end gap-3">
               <button

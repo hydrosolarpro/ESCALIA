@@ -27,22 +27,41 @@ const currencyFmt = (n: number) =>
   n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue }) => {
-  const totalRevenue = useMemo(() => revenue.reduce((sum, r) => sum + Number(r.amount), 0), [revenue]);
+  // Los leads en estado "ganado" con monto definido cuentan como ganancia real,
+  // igual que las filas cargadas manualmente en la tabla de Ingresos.
+  const wonLeadsWithAmount = useMemo(
+    () => leads.filter((l) => l.status === 'ganado' && l.amount != null),
+    [leads]
+  );
+
+  const totalRevenue = useMemo(() => {
+    const fromRevenue = revenue.reduce((sum, r) => sum + Number(r.amount), 0);
+    const fromLeads = wonLeadsWithAmount.reduce((sum, l) => sum + Number(l.amount), 0);
+    return fromRevenue + fromLeads;
+  }, [revenue, wonLeadsWithAmount]);
 
   const revenueByChannel = useMemo(() => {
     const map = new Map<string, number>();
     revenue.forEach((r) => map.set(r.channel, (map.get(r.channel) || 0) + Number(r.amount)));
+    wonLeadsWithAmount.forEach((l) => {
+      const key = l.channel || 'Sin canal';
+      map.set(key, (map.get(key) || 0) + Number(l.amount));
+    });
     return Array.from(map.entries()).map(([name, value]) => ({ name, value }));
-  }, [revenue]);
+  }, [revenue, wonLeadsWithAmount]);
 
   const revenueByProduct = useMemo(() => {
     const map = new Map<string, number>();
     revenue.forEach((r) => map.set(r.product, (map.get(r.product) || 0) + Number(r.amount)));
+    wonLeadsWithAmount.forEach((l) => {
+      const key = l.product || 'Sin producto';
+      map.set(key, (map.get(key) || 0) + Number(l.amount));
+    });
     return Array.from(map.entries())
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 8);
-  }, [revenue]);
+  }, [revenue, wonLeadsWithAmount]);
 
   const leadsByChannel = useMemo(() => {
     const map = new Map<string, number>();
@@ -58,7 +77,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue }) => {
 
   const handleExportPdf = () => {
     exportToPdf(
-      'Resumen General — Ingresos por Canal',
+      'Resumen General — Ganancias por Canal (Ingresos + Leads Ganados)',
       ['Canal', 'Total (USD)'],
       revenueByChannel.map((r) => [r.name, currencyFmt(r.value)]),
       'escalia-resumen-ingresos'
@@ -106,7 +125,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-[#121214] border border-[#27272a] rounded-xl p-5 min-w-0">
           <h3 className="font-mono-custom text-xs text-[#cbd5e1] uppercase tracking-wider font-bold mb-4">
-            Ganancias por Canal (USD)
+            Ganancias por Canal <span className="text-[#525252] normal-case font-normal">(Ingresos + Leads Ganados)</span>
           </h3>
           <div className="w-full h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -131,7 +150,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue }) => {
 
         <div className="bg-[#121214] border border-[#27272a] rounded-xl p-5 min-w-0">
           <h3 className="font-mono-custom text-xs text-[#cbd5e1] uppercase tracking-wider font-bold mb-4">
-            Top Productos por Ganancia (USD)
+            Top Productos por Ganancia <span className="text-[#525252] normal-case font-normal">(Ingresos + Leads Ganados)</span>
           </h3>
           <div className="w-full h-64">
             <ResponsiveContainer width="100%" height="100%">

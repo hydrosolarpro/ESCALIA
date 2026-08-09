@@ -15,6 +15,8 @@ create table if not exists public.leads (
   country text,
   channel text,
   product text,
+  amount numeric(12, 2) check (amount is null or amount >= 0),
+  currency text not null default 'USD',
   source text not null default 'manual' check (source in ('web_form', 'calendly', 'manual', 'whatsapp_interes')),
   status text not null default 'nuevo' check (status in ('nuevo', 'contactado', 'en_negociacion', 'ganado', 'perdido')),
   notes text,
@@ -22,6 +24,20 @@ create table if not exists public.leads (
 );
 
 comment on table public.leads is 'Mini-CRM: leads/clientes potenciales capturados desde la web, Calendly o registro manual de administradores.';
+
+-- Migración idempotente: agrega columnas nuevas si la tabla ya existía antes de este cambio.
+alter table public.leads add column if not exists amount numeric(12, 2);
+alter table public.leads add column if not exists currency text not null default 'USD';
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'leads_amount_check'
+  ) then
+    alter table public.leads add constraint leads_amount_check check (amount is null or amount >= 0);
+  end if;
+end $$;
+
+comment on column public.leads.amount is 'Monto del producto/negocio asociado al lead. Si status = ganado, se suma a las Ganancias Totales junto con la tabla revenue.';
 
 -- =========================================================
 -- 2. TABLA: revenue (ganancias por canal / producto)
