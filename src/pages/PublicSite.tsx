@@ -1,0 +1,79 @@
+import React, { useState } from 'react';
+import { Navbar } from '../components/Navbar';
+import { Hero } from '../components/Hero';
+import { ValuePropCarousel } from '../components/ValuePropCarousel';
+import { FourChannels } from '../components/FourChannels';
+import { TransversalPortfolio } from '../components/TransversalPortfolio';
+import { ContactFooter } from '../components/ContactFooter';
+import { ChannelDetailModal } from '../components/ChannelDetailModal';
+import { Toast } from '../components/Toast';
+import { Channel } from '../types';
+
+export const PublicSite: React.FC = () => {
+  const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleShowToast = (msg: string) => {
+    setToastMessage(msg);
+  };
+
+  const handleOpenAppointment = () => {
+    window.open('https://calendly.com/productosaas2026/30min', '_blank', 'noopener,noreferrer');
+    handleShowToast('Abriendo Calendly en una pestaña nueva...');
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0A0A0A] text-[#e5e2e1] font-body selection:bg-[#D32F2F] selection:text-white">
+      {/* Navigation Bar */}
+      <Navbar
+        onOpenAppointment={handleOpenAppointment}
+      />
+
+      {/* Main Content Sections */}
+      <main>
+        {/* Visual Value Proposition Carousel at Beginning of Page */}
+        <ValuePropCarousel
+          onSelectChannel={(channel) => setSelectedChannel(channel)}
+        />
+
+        {/* Hero Section */}
+        <Hero
+          onOpenAppointment={handleOpenAppointment}
+        />
+
+        {/* Four Channels Section */}
+        <FourChannels
+          onSelectChannel={(channel) => setSelectedChannel(channel)}
+          onOpenAppointment={handleOpenAppointment}
+        />
+
+        {/* Transversal Portfolio Bento Grid */}
+        <TransversalPortfolio
+          onOpenAppointment={handleOpenAppointment}
+        />
+      </main>
+
+      {/* Contact & Footer Section */}
+      <ContactFooter
+        onOpenAppointment={handleOpenAppointment}
+        onShowToast={handleShowToast}
+      />
+
+      {/* Interactive Channel Detail Modal */}
+      <ChannelDetailModal
+        channel={selectedChannel}
+        onClose={() => setSelectedChannel(null)}
+        onOpenAppointment={() => {
+          setSelectedChannel(null);
+          handleOpenAppointment();
+        }}
+      />
+
+      {/* Global Toast Notification */}
+      <Toast
+        message={toastMessage}
+        onClose={() => setToastMessage(null)}
+      />
+    </div>
+  );
+};

@@ -47,3 +47,38 @@ export interface CalculationResult {
   growthScore: number;
   keyMilestones: string[];
 }
+
+/** Mini-CRM: origen de un lead */
+export type LeadSource = 'web_form' | 'calendly' | 'manual' | 'whatsapp_interes';
+
+/** Mini-CRM: estado del lead dentro del embudo comercial */
+export type LeadStatus = 'nuevo' | 'contactado' | 'en_negociacion' | 'ganado' | 'perdido';
+
+export interface Lead {
+  id: string;
+  full_name: string;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  channel: string | null;
+  product: string | null;
+  source: LeadSource;
+  status: LeadStatus;
+  notes: string | null;
+  created_at: string;
+}
+
+export type LeadInsert = Omit<Lead, 'id' | 'created_at'>;
+
+export interface RevenueEntry {
+  id: string;
+  channel: string;
+  product: string;
+  amount: number;
+  currency: string;
+  description: string | null;
+  entry_date: string;
+  created_at: string;
+}
+
+export type RevenueInsert = Omit<RevenueEntry, 'id' | 'created_at'>;

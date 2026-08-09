@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DiscoveryFormState } from '../types';
 import { EscaliaLogo } from './EscaliaLogo';
+import { WorkWithUsModal } from './WorkWithUsModal';
 
 interface ContactFooterProps {
   onOpenAppointment: () => void;
@@ -18,6 +19,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [activeLegalModal, setActiveLegalModal] = useState<'privacy' | 'terms' | null>(null);
+  const [workWithUsOpen, setWorkWithUsOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,19 +210,26 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
             >
               LinkedIn
             </a>
-            <a
-              href="https://wa.me/51960442025"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => setWorkWithUsOpen(true)}
               className="text-[#e4beba] hover:text-[#FBC02D] transition-colors"
             >
               Trabaja con nosotros - experto en algún dominio
-            </a>
+            </button>
             <a
               href="#contacto"
               className="text-[#ffb3ac] hover:text-[#FBC02D] transition-colors font-semibold"
             >
               Contacto
+            </a>
+            <a
+              href="/admin/login"
+              title="Acceso administrador"
+              className="text-[#525252] hover:text-[#FBC02D] transition-colors flex items-center gap-1"
+            >
+              <span className="material-symbols-outlined text-sm">lock</span>
+              Admin
             </a>
           </div>
         </div>
@@ -255,6 +264,13 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
           </div>
         </div>
       )}
+
+      {/* "Trabaja con nosotros" Professional Lead Capture Modal */}
+      <WorkWithUsModal
+        open={workWithUsOpen}
+        onClose={() => setWorkWithUsOpen(false)}
+        onShowToast={onShowToast}
+      />
     </footer>
   );
 };

@@ -1,80 +1,46 @@
-import React, { useState } from 'react';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { ValuePropCarousel } from './components/ValuePropCarousel';
-import { FourChannels } from './components/FourChannels';
-import { TransversalPortfolio } from './components/TransversalPortfolio';
-import { ContactFooter } from './components/ContactFooter';
-import { ChannelDetailModal } from './components/ChannelDetailModal';
-import { Toast } from './components/Toast';
-import { Channel } from './types';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './lib/AuthContext';
+import { PublicSite } from './pages/PublicSite';
+
+// Code-split the admin dashboard (Supabase, Recharts, jsPDF, ExcelJS) away from
+// the public site bundle — visitors never pay for weight they don't use.
+const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute').then((m) => ({ default: m.ProtectedRoute })));
+const Login = lazy(() => import('./pages/admin/Login').then((m) => ({ default: m.Login })));
+const Dashboard = lazy(() => import('./pages/admin/Dashboard').then((m) => ({ default: m.Dashboard })));
+
+const AdminFallback: React.FC = () => (
+  <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
+    <span className="font-mono-custom text-xs text-[#cbd5e1] animate-pulse">Cargando panel administrativo…</span>
+  </div>
+);
 
 export default function App() {
-  const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const handleShowToast = (msg: string) => {
-    setToastMessage(msg);
-  };
-
-  const handleOpenAppointment = () => {
-    window.open('https://calendly.com/productosaas2026/30min', '_blank', 'noopener,noreferrer');
-    handleShowToast('Abriendo Calendly en una pestaña nueva...');
-  };
-
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#e5e2e1] font-body selection:bg-[#D32F2F] selection:text-white">
-      {/* Navigation Bar */}
-      <Navbar
-        onOpenAppointment={handleOpenAppointment}
-      />
-
-      {/* Main Content Sections */}
-      <main>
-        {/* Visual Value Proposition Carousel at Beginning of Page */}
-        <ValuePropCarousel
-          onSelectChannel={(channel) => setSelectedChannel(channel)}
-        />
-
-        {/* Hero Section */}
-        <Hero
-          onOpenAppointment={handleOpenAppointment}
-        />
-
-        {/* Four Channels Section */}
-        <FourChannels
-          onSelectChannel={(channel) => setSelectedChannel(channel)}
-          onOpenAppointment={handleOpenAppointment}
-        />
-
-        {/* Transversal Portfolio Bento Grid */}
-        <TransversalPortfolio
-          onOpenAppointment={handleOpenAppointment}
-        />
-      </main>
-
-      {/* Contact & Footer Section */}
-      <ContactFooter
-        onOpenAppointment={handleOpenAppointment}
-        onShowToast={handleShowToast}
-      />
-
-      {/* Interactive Channel Detail Modal */}
-      <ChannelDetailModal
-        channel={selectedChannel}
-        onClose={() => setSelectedChannel(null)}
-        onOpenAppointment={() => {
-          setSelectedChannel(null);
-          handleOpenAppointment();
-        }}
-      />
-
-      {/* Global Toast Notification */}
-      <Toast
-        message={toastMessage}
-        onClose={() => setToastMessage(null)}
-      />
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<PublicSite />} />
+          <Route
+            path="/admin/login"
+            element={
+              <Suspense fallback={<AdminFallback />}>
+                <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<AdminFallback />}>
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              </Suspense>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
-
