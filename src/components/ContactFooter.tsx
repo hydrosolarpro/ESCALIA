@@ -84,7 +84,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               </div>
 
               <a
-                href="https://wa.me/51960442025?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n."
+                href="https://wa.me/51960442025?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA%20y%20sus%20productos%20para%20mi%20negocio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 text-[#cbd5e1] hover:text-white transition-colors cursor-pointer group p-3 rounded-xl hover:bg-[#121214] border border-transparent hover:border-[#27272a]"
@@ -95,6 +95,21 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
                 <div>
                   <div className="font-mono-custom text-[11px] text-[#cbd5e1] uppercase font-bold">WhatsApp Directo</div>
                   <div className="font-body text-base font-bold text-[#ffffff]">+51 960 442 025</div>
+                </div>
+              </a>
+
+              <a
+                href="https://wa.me/584121961606?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA%20y%20sus%20productos%20para%20mi%20negocio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 text-[#cbd5e1] hover:text-white transition-colors cursor-pointer group p-3 rounded-xl hover:bg-[#121214] border border-transparent hover:border-[#27272a]"
+              >
+                <div className="w-10 h-10 rounded-lg bg-[#27272a] flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow">
+                  <span className="material-symbols-outlined text-xl">forum</span>
+                </div>
+                <div>
+                  <div className="font-mono-custom text-[11px] text-[#cbd5e1] uppercase font-bold">WhatsApp Directo</div>
+                  <div className="font-body text-base font-bold text-[#ffffff]">+58 412 196 1606</div>
                 </div>
               </a>
 
