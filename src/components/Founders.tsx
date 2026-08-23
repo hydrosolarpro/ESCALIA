@@ -53,11 +53,13 @@ export const Founders: React.FC = () => {
               key={founder.name}
               className="bg-[#121214] p-8 rounded-xl border border-[#27272a] hover:border-[#D32F2F]/60 transition-colors flex flex-col items-center text-center space-y-4"
             >
-              <img
-                src={founder.photo}
-                alt={founder.name}
-                className="w-32 h-32 rounded-full object-cover border-2 border-[#FBC02D]/40"
-              />
+              <div className="w-full max-w-[220px] rounded-xl overflow-hidden border-2 border-[#FBC02D]/40 bg-[#0A0A0A]">
+                <img
+                  src={founder.photo}
+                  alt={founder.name}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
               <div className="space-y-1">
                 <h3 className="font-display text-xl font-bold text-white">{founder.name}</h3>
                 <span className="block font-mono-custom text-xs text-[#FBC02D] uppercase tracking-wider font-bold">
