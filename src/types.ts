@@ -52,7 +52,7 @@ export interface CalculationResult {
 export type LeadSource = 'web_form' | 'calendly' | 'manual' | 'whatsapp_interes';
 
 /** Mini-CRM: estado del lead dentro del embudo comercial */
-export type LeadStatus = 'nuevo' | 'contactado' | 'en_negociacion' | 'ganado' | 'perdido';
+export type LeadStatus = 'nuevo' | 'contactado' | 'en_negociacion' | 'stand_by' | 'ganado' | 'perdido';
 
 export interface Lead {
   id: string;

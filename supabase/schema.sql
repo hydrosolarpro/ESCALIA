@@ -18,7 +18,7 @@ create table if not exists public.leads (
   amount numeric(12, 2) check (amount is null or amount >= 0),
   currency text not null default 'USD' check (currency in ('USD', 'PEN')),
   source text not null default 'manual' check (source in ('web_form', 'calendly', 'manual', 'whatsapp_interes')),
-  status text not null default 'nuevo' check (status in ('nuevo', 'contactado', 'en_negociacion', 'ganado', 'perdido')),
+  status text not null default 'nuevo' check (status in ('nuevo', 'contactado', 'en_negociacion', 'stand_by', 'ganado', 'perdido')),
   notes text,
   created_at timestamptz not null default now()
 );
@@ -42,6 +42,11 @@ begin
     alter table public.leads add constraint leads_currency_check check (currency in ('USD', 'PEN'));
   end if;
 end $$;
+
+-- Migración idempotente: agrega el estado 'stand_by' al check de status si la tabla ya existía con el check anterior.
+alter table public.leads drop constraint if exists leads_status_check;
+alter table public.leads add constraint leads_status_check
+  check (status in ('nuevo', 'contactado', 'en_negociacion', 'stand_by', 'ganado', 'perdido'));
 
 comment on column public.leads.amount is 'Monto del producto/negocio asociado al lead. Si status = ganado, se suma a las Ganancias Totales junto con la tabla revenue.';
 comment on column public.leads.product is 'Nombre del producto de interés (máx. 200 caracteres).';

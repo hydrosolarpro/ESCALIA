@@ -15,6 +15,7 @@ const STATUS_LABELS: Record<LeadStatus, string> = {
   nuevo: 'Nuevo',
   contactado: 'Contactado',
   en_negociacion: 'En Negociación',
+  stand_by: 'Stand By',
   ganado: 'Ganado',
   perdido: 'Perdido',
 };
@@ -23,6 +24,7 @@ const STATUS_COLORS: Record<LeadStatus, string> = {
   nuevo: '#60a5fa',
   contactado: '#FBC02D',
   en_negociacion: '#F57C00',
+  stand_by: '#94a3b8',
   ganado: '#00E676',
   perdido: '#71717a',
 };
