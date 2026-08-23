@@ -4,6 +4,7 @@ import { Hero } from '../components/Hero';
 import { ValuePropCarousel } from '../components/ValuePropCarousel';
 import { FourChannels } from '../components/FourChannels';
 import { TransversalPortfolio } from '../components/TransversalPortfolio';
+import { Founders } from '../components/Founders';
 import { ContactFooter } from '../components/ContactFooter';
 import { ChannelDetailModal } from '../components/ChannelDetailModal';
 import { Toast } from '../components/Toast';
@@ -51,6 +52,9 @@ export const PublicSite: React.FC = () => {
         <TransversalPortfolio
           onOpenAppointment={handleOpenAppointment}
         />
+
+        {/* Founders Section */}
+        <Founders />
       </main>
 
       {/* Contact & Footer Section */}
