@@ -226,7 +226,12 @@ export const LeadsTab: React.FC<LeadsTabProps> = ({ leads, addLead, updateLead, 
                 <td className="px-4 py-3">
                   <select
                     value={lead.status}
-                    onChange={(e) => updateLeadStatus(lead.id, e.target.value as LeadStatus)}
+                    onChange={async (e) => {
+                      const { error: statusError } = await updateLeadStatus(lead.id, e.target.value as LeadStatus);
+                      if (statusError) {
+                        alert(`No se pudo actualizar el estado: ${statusError}`);
+                      }
+                    }}
                     style={{ color: STATUS_COLORS[lead.status] }}
                     className="bg-[#09090b] border border-[#27272a] rounded-md px-2 py-1 text-[11px] font-mono-custom font-bold outline-none"
                   >
