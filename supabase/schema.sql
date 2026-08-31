@@ -194,3 +194,21 @@ create index if not exists leads_status_idx on public.leads (status);
 create index if not exists leads_created_at_idx on public.leads (created_at desc);
 create index if not exists revenue_channel_idx on public.revenue (channel);
 create index if not exists revenue_entry_date_idx on public.revenue (entry_date desc);
+
+-- =========================================================
+-- 5. FUNCIÓN: keepalive_ping
+-- =========================================================
+-- Consulta mínima (SELECT 1) usada por el cron de keep-alive en /api/keepalive
+-- (ver vercel.json > crons) para que Supabase nunca considere el proyecto
+-- inactivo y lo pause. No lee ni modifica ninguna tabla; es solo un "ping".
+create or replace function public.keepalive_ping()
+returns int
+language sql
+stable
+as $$
+  select 1;
+$$;
+
+grant execute on function public.keepalive_ping() to anon, authenticated;
+
+comment on function public.keepalive_ping() is 'SELECT 1 usado por /api/keepalive (cron diario de Vercel) para evitar que Supabase pause el proyecto por inactividad.';
