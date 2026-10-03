@@ -1,5 +1,6 @@
 import React from 'react';
 import { CHANNELS_DATA } from '../data/channelsData';
+import { Tilt3D } from './Tilt3D';
 import { Channel } from '../types';
 
 interface FourChannelsProps {
@@ -15,7 +16,7 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF3D3D] animate-pulse"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF3D3D] motion-safe:animate-pulse"></span>
               <span className="font-mono-custom text-xs text-[#FBC02D] uppercase tracking-widest font-bold">
                 Estructura Operativa &amp; Canales
               </span>
@@ -39,14 +40,17 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
 
         {/* 2x2 Grid of Channels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {CHANNELS_DATA.map((channel) => {
+          {CHANNELS_DATA.map((channel, i) => {
             const isHotCard = channel.id === 'canal-04';
 
             return (
+              <Tilt3D key={channel.id} delay={(i % 2) * 120}>
               <div
-                key={channel.id}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectChannel(channel); } }}
                 onClick={() => onSelectChannel(channel)}
-                className={`p-8 rounded-xl border transition-all duration-300 group flex flex-col justify-between cursor-pointer relative overflow-hidden ${
+                className={`h-full p-8 rounded-xl border transition-all duration-300 group flex flex-col justify-between cursor-pointer relative overflow-hidden ${
                   isHotCard
                     ? 'bg-[#18181b] border-[#3f3f46] card-hot hover:border-[#F57C00] shadow-2xl'
                     : 'bg-[#121214] border-[#27272a] hover:border-[#D32F2F]/60 hover:bg-[#18181b]'
@@ -126,6 +130,7 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
                   </div>
                 </div>
               </div>
+              </Tilt3D>
             );
           })}
         </div>

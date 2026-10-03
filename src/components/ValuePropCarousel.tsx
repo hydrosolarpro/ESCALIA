@@ -12,7 +12,7 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % CHANNELS_DATA.length);
@@ -40,40 +40,18 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
   };
 
   return (
-    <section className="relative pt-24 pb-12 md:pt-28 md:pb-14 bg-[#131313] overflow-hidden border-b border-[#2A2A2A]">
+    <section className="relative py-14 md:py-16 bg-[#131313] overflow-hidden border-b border-[#2A2A2A]">
       <div className="max-w-[1280px] mx-auto px-5 md:px-20">
         
-        {/* ESCALIA Header Banner Before Carousel */}
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1c20] border border-[#333338] shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#FF3D3D] animate-pulse"></span>
-            <span className="font-mono-custom text-xs text-[#FBC02D] font-bold tracking-widest uppercase">
-              ESCALIA Growth Studio • 2026
-            </span>
-          </div>
-
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            SaaS Development &amp;<br className="hidden sm:inline" /> Growth Studio
-          </h2>
-
-          <p className="font-mono-custom text-xs sm:text-sm text-[#60a5fa] font-bold tracking-wider uppercase">
-            • De la idea al producto • Del producto al crecimiento exponencial •
-          </p>
-        </div>
-
         {/* Carousel Header Controls */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FF3D3D] animate-pulse"></span>
-            <h3 className="font-mono-custom text-xs text-[#FBC02D] uppercase tracking-widest font-bold">
-              Propuesta de Valor Visual • Los 4 Canales en Acción
-            </h3>
-          </div>
+          <h2 className="font-display text-xl md:text-2xl font-extrabold text-white tracking-tight">Los 4 canales en acción</h2>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsPaused(!isPaused)}
-              className="p-1.5 text-[#cbd5e1] hover:text-[#FBC02D] transition-colors rounded hover:bg-[#2A2A2A]"
+              aria-label={isPaused ? "Reanudar auto-reproducción" : "Pausar auto-reproducción"}
+              className="p-2.5 text-[#cbd5e1] hover:text-[#FBC02D] transition-colors rounded hover:bg-[#2A2A2A]"
               title={isPaused ? "Reanudar auto-reproducción" : "Pausar auto-reproducción"}
             >
               <span className="material-symbols-outlined text-lg">
@@ -82,14 +60,14 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
             </button>
             <button
               onClick={handlePrev}
-              className="p-2 bg-[#201f1f] border border-[#2A2A2A] hover:border-[#D32F2F] text-[#f1f5f9] rounded transition-colors"
+              className="p-2.5 bg-[#201f1f] border border-[#2A2A2A] hover:border-[#D32F2F] text-[#f1f5f9] rounded transition-colors"
               aria-label="Anterior canal"
             >
               <span className="material-symbols-outlined text-sm">arrow_back</span>
             </button>
             <button
               onClick={handleNext}
-              className="p-2 bg-[#201f1f] border border-[#2A2A2A] hover:border-[#D32F2F] text-[#f1f5f9] rounded transition-colors"
+              className="p-2.5 bg-[#201f1f] border border-[#2A2A2A] hover:border-[#D32F2F] text-[#f1f5f9] rounded transition-colors"
               aria-label="Siguiente canal"
             >
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -102,11 +80,16 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
           ref={scrollContainerRef}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
           className="flex overflow-x-auto snap-x snap-mandatory gap-4 hide-scrollbar scroll-smooth"
         >
           {CHANNELS_DATA.map((channel, idx) => (
             <div
               key={channel.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Ver detalles: ${channel.title}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectChannel(channel); } }}
               onClick={() => onSelectChannel(channel)}
               className="min-w-full shrink-0 snap-start relative aspect-[16/9] md:aspect-[21/9] rounded-xl overflow-hidden border border-[#2A2A2A] hover:border-[#D32F2F]/60 cursor-pointer group transition-all"
             >
@@ -146,10 +129,10 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
             <button
               key={channel.id}
               onClick={() => setActiveSlide(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-300 ${
                 activeSlide === idx
                   ? 'w-10 bg-[#D32F2F]'
-                  : 'w-6 bg-[#2A2A2A] hover:bg-[#5b403d]'
+                  : 'w-6 bg-[#3f3f46] hover:bg-[#71717a]'
               }`}
               aria-label={`Ir a canal ${idx + 1}`}
             />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
+import { Tilt3D } from './Tilt3D';
 import { PortfolioItem } from '../types';
 
 interface TransversalPortfolioProps {
@@ -15,7 +16,7 @@ export const TransversalPortfolio: React.FC<TransversalPortfolioProps> = ({ onOp
         {/* Header */}
         <div className="mb-16 text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#18181b] border border-[#27272a] rounded-full">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#F57C00] animate-pulse"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#F57C00] motion-safe:animate-pulse"></span>
             <span className="font-mono-custom text-xs text-[#FBC02D] uppercase tracking-wider font-bold">
               Servicios &amp; Capacidades Transversales
             </span>
@@ -32,14 +33,17 @@ export const TransversalPortfolio: React.FC<TransversalPortfolioProps> = ({ onOp
 
         {/* Bento Grid with Flexible Dynamic Auto Rows */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {PORTFOLIO_ITEMS.map((item) => {
+          {PORTFOLIO_ITEMS.map((item, i) => {
             const isLarge = item.span.includes('col-span-2');
 
             return (
+              <Tilt3D key={item.id} className={item.span} delay={(i % 2) * 120}>
               <div
-                key={item.id}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedItem(item); } }}
                 onClick={() => setSelectedItem(item)}
-                className={`${item.span} bg-[#121214] p-7 md:p-8 rounded-xl border border-[#27272a] hover:border-[#D32F2F]/60 flex flex-col justify-between relative overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-2xl min-h-[240px]`}
+                className={`h-full bg-[#121214] p-7 md:p-8 rounded-xl border border-[#27272a] hover:border-[#D32F2F]/60 flex flex-col justify-between relative overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-2xl min-h-[240px]`}
               >
                 {/* Background decorative fire overlay for large items */}
                 {isLarge ? (
@@ -77,6 +81,7 @@ export const TransversalPortfolio: React.FC<TransversalPortfolioProps> = ({ onOp
                   </p>
                 </div>
               </div>
+              </Tilt3D>
             );
           })}
         </div>

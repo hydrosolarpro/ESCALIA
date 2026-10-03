@@ -26,20 +26,21 @@ export const PublicSite: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#e5e2e1] font-body selection:bg-[#D32F2F] selection:text-white">
       {/* Navigation Bar */}
+      <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded">Saltar al contenido</a>
       <Navbar
         onOpenAppointment={handleOpenAppointment}
       />
 
       {/* Main Content Sections */}
-      <main>
-        {/* Visual Value Proposition Carousel at Beginning of Page */}
-        <ValuePropCarousel
-          onSelectChannel={(channel) => setSelectedChannel(channel)}
-        />
-
+      <main id="contenido">
         {/* Hero Section */}
         <Hero
           onOpenAppointment={handleOpenAppointment}
+        />
+
+        {/* Visual Value Proposition Carousel at Beginning of Page */}
+        <ValuePropCarousel
+          onSelectChannel={(channel) => setSelectedChannel(channel)}
         />
 
         {/* Four Channels Section */}

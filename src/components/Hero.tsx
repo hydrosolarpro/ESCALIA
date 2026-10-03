@@ -27,6 +27,24 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
 
   // Canvas ref for particle effect
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const parallaxRef = useRef<HTMLDivElement>(null);
+
+  // Cursor parallax for floating cubes (fine pointers only)
+  useEffect(() => {
+    const el = parallaxRef.current;
+    if (!el || !window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
+    const onMove = (e: MouseEvent) => {
+      const dx = e.clientX - window.innerWidth / 2;
+      const dy = e.clientY - window.innerHeight / 2;
+      el.querySelectorAll<HTMLElement>('[data-depth]').forEach((n) => {
+        const d = Number(n.dataset.depth);
+        n.style.setProperty('--px', `${dx * d}px`);
+        n.style.setProperty('--py', `${dy * d}px`);
+      });
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
 
   // Nexus Interactive Target Nodes
   const nexusNodes: NexusNode[] = [
@@ -36,7 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
       x: 32,
       y: 28,
       icon: 'developer_board',
-      metric: '99.9% Uptime',
+      metric: 'Multi-tenant & escalable',
       detail: 'Infraestructura cloud multi-tenant con aislamiento de datos y auto-scaling.'
     },
     {
@@ -45,7 +63,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
       x: 72,
       y: 35,
       icon: 'hub',
-      metric: '+340% Conversión',
+      metric: 'Captación de clientes',
       detail: 'Canales de adquisición pagada y orgánica optimizados para captación de clientes.'
     },
     {
@@ -54,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
       x: 25,
       y: 68,
       icon: 'payments',
-      metric: 'Revenue Share Engine',
+      metric: 'Cobros recurrentes',
       detail: 'Integración avanzada con Stripe, cobros recurrentes y analítica MRR/ARR.'
     },
     {
@@ -63,10 +81,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
       x: 68,
       y: 72,
       icon: 'trending_up',
-      metric: 'Scale Factor 4.8x',
-      detail: 'Optimización continua de retención (Churn < 2%) y crecimiento acelerado.'
+      metric: 'Retención y crecimiento',
+      detail: 'Optimización continua de retención y crecimiento sostenido, medido con analítica MRR/ARR.'
     }
   ];
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsModalOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isModalOpen]);
 
   // Particle Canvas effect inside the Nexus card
   useEffect(() => {
@@ -75,6 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let animationFrameId: number;
     let width = (canvas.width = canvas.offsetWidth || 500);
     let height = (canvas.height = canvas.offsetHeight || 350);
@@ -191,310 +217,320 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
   };
 
   return (
-    <section className="relative py-14 md:py-20 px-5 md:px-20 min-h-screen flex items-center overflow-hidden bg-[#0A0A0A]">
-      {/* Background ambient light glowing effects */}
+    <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 px-5 md:px-20 min-h-screen flex items-center overflow-hidden bg-[#0A0A0A]">
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#D32F2F]/15 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/3 right-10 w-[500px] h-[500px] bg-[#F57C00]/15 rounded-full blur-[140px] pointer-events-none"></div>
 
-      <div className="max-w-[1280px] mx-auto w-full flex items-center relative z-10">
 
-        {/* Hero Central Column with High Legibility & Visual Balance */}
-        <div className="max-w-4xl mx-auto space-y-8 relative z-20 w-full">
-          
-          {/* Philosophy Quote Block (matching QuoteBanner format) */}
-          <div className="bg-[#121215] border border-[#27272a] p-5 sm:p-6 rounded-2xl max-w-xl text-left shadow-2xl space-y-3 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF3D3D]/10 rounded-full blur-2xl pointer-events-none"></div>
-            <blockquote className="font-display text-lg sm:text-xl text-[#ffffff] leading-snug font-extrabold italic tracking-tight drop-shadow-sm">
-              &ldquo;Transformamos procesos manuales e ideas de negocio en <span className="fire-text">activos digitales escalables</span> con arquitectura de alto rendimiento.&rdquo;
-            </blockquote>
-            <div className="pt-1 flex items-center gap-3">
-              <div className="h-px w-10 bg-gradient-to-r from-[#FF3D3D] to-transparent"></div>
-              <span className="font-mono-custom text-xs text-[#FBC02D] uppercase tracking-widest font-bold">
-                Filosofía ESCALIA Studio
-              </span>
-              <div className="h-px w-10 bg-gradient-to-l from-[#FF3D3D] to-transparent"></div>
+      {/* 3D floating cubes with mouse parallax */}
+      <div ref={parallaxRef} className="cube-scene absolute inset-0 pointer-events-none hidden md:block" aria-hidden="true">
+        {[
+          { s: 54, top: '16%', left: '46%', d: 16, z: 0.03, bob: 7 },
+          { s: 34, top: '70%', left: '40%', d: 22, z: 0.05, bob: 9 },
+          { s: 72, top: '8%', left: '88%', d: 26, z: 0.02, bob: 8 },
+          { s: 28, top: '84%', left: '90%', d: 14, z: 0.06, bob: 6 },
+        ].map((c, i) => (
+          <div
+            key={i}
+            data-depth={c.z}
+            className="absolute"
+            style={{ top: c.top, left: c.left, transform: 'translate3d(var(--px, 0px), var(--py, 0px), 0)', transition: 'transform 0.3s ease-out' }}
+          >
+            <div className="cube" style={{ ['--s' as string]: `${c.s}px`, animation: `cubeSpin ${c.d}s linear infinite, cubeBob ${c.bob}s ease-in-out infinite` }}>
+              <i /><i /><i /><i /><i /><i />
             </div>
           </div>
+        ))}
+      </div>
 
-          {/* Dynamic Interactive "Nexus Evolution Active" Artwork (Placed Before Lead Paragraph) */}
-          <div className="relative perspective-1000 my-6">
-            
-            {/* Outer glowing aura */}
-            <div className={`absolute inset-0 rounded-2xl z-0 blur-3xl transition-opacity duration-500 ${
-              nexusMode === 'spectrum' ? 'opacity-80 neon-border-pulse bg-gradient-to-tr from-[#FF3D3D] via-[#FF8A00] to-[#FBC02D]' : 'opacity-40 bg-gradient-to-tr from-[#D32F2F] to-[#F57C00]'
-            }`}></div>
-
-            {/* Interactive Card Container with 3D Tilt */}
-            <div
-              ref={cardRef}
-              onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                transform: isHovered
-                  ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.02, 1.02, 1.02)`
-                  : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
-                transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
-              }}
-              className="relative z-10 rounded-2xl overflow-hidden border border-[#3f3f46] bg-[#121214] shadow-2xl group select-none"
-            >
-              {/* Dynamic Glare Reflection Overlay */}
-              {isHovered && (
-                <div
-                  className="absolute inset-0 pointer-events-none z-30 transition-opacity duration-300"
-                  style={{
-                    background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%)`
-                  }}
-                ></div>
-              )}
-
-              {/* Interactive Mode Control Bar Header */}
-              <div className="bg-[#18181b]/90 backdrop-blur-md px-4 py-2.5 border-b border-[#27272a] flex items-center justify-between relative z-20">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00E676] animate-pulse"></span>
-                  <span className="font-mono-custom text-xs font-bold text-[#00E676] tracking-wider uppercase">
-                    NEXUS EVOLUTION ACTIVE
-                  </span>
-                </div>
-
-                {/* Mode Switcher Buttons */}
-                <div className="flex items-center gap-1 bg-[#09090b] p-1 rounded-lg border border-[#27272a]">
-                  <button
-                    onClick={() => setNexusMode('scanner')}
-                    className={`px-2.5 py-1 rounded text-[10px] font-mono-custom font-semibold transition-all flex items-center gap-1 ${
-                      nexusMode === 'scanner'
-                        ? 'bg-[#D32F2F] text-white shadow'
-                        : 'text-[#a1a1aa] hover:text-white'
-                    }`}
-                    title="Activar escáner holográfico"
-                  >
-                    <span className="material-symbols-outlined text-xs">radar</span>
-                    <span>Escáner</span>
-                  </button>
-
-                  <button
-                    onClick={() => setNexusMode('nodes')}
-                    className={`px-2.5 py-1 rounded text-[10px] font-mono-custom font-semibold transition-all flex items-center gap-1 ${
-                      nexusMode === 'nodes'
-                        ? 'bg-[#F57C00] text-white shadow'
-                        : 'text-[#a1a1aa] hover:text-white'
-                    }`}
-                    title="Explorar nodos de arquitectura"
-                  >
-                    <span className="material-symbols-outlined text-xs">adjust</span>
-                    <span>Nodos</span>
-                  </button>
-
-                  <button
-                    onClick={() => setNexusMode('spectrum')}
-                    className={`px-2.5 py-1 rounded text-[10px] font-mono-custom font-semibold transition-all flex items-center gap-1 ${
-                      nexusMode === 'spectrum'
-                        ? 'bg-[#FBC02D] text-[#0A0A0A] font-bold shadow'
-                        : 'text-[#a1a1aa] hover:text-white'
-                    }`}
-                    title="Modo Cyber Spectrum"
-                  >
-                    <span className="material-symbols-outlined text-xs">graphic_eq</span>
-                    <span>Matrix</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Main Image Showcase with Canvas & Interactive Overlays */}
-              <div className="relative overflow-hidden aspect-[16/10] sm:aspect-[16/9]">
-                {/* Background Base Image */}
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKvBAnwaNvs6v9kCNV95yMMtUYZcS7MgTPPwR3kLn_8szDA_eQkGIQCrmDIPqy8KuZ2sLtFxAwmeiE2eIUE6euzsA1Y2Cc0xocXo4IT8G9kE7cLYsrWyTmPOBi7i3fNSh-JZgGxxyivYtnShF190eKYnfR430jmDCc5C7FriQgiKPYxdwOGXqt5dH44fNed0RRDPb02prYh-YLZO-1BdkGKcjqEpxRlSzannGdhXE8MwaW_J89N92L7w"
-                  alt="NEXUS EVOLUTION - Hyper-Growth Initiative Studio"
-                  className={`w-full h-full object-cover transition-all duration-700 ${
-                    nexusMode === 'spectrum' ? 'filter contrast-125 saturate-150 brightness-90' : 'brightness-95'
-                  }`}
-                  loading="eager"
-                />
-
-                {/* Particle Canvas Overlay */}
-                <canvas
-                  ref={canvasRef}
-                  className="absolute inset-0 pointer-events-none z-10 w-full h-full"
-                />
-
-                {/* MODE 1: SCANNER - Holographic Laser Beam Sweep */}
-                {nexusMode === 'scanner' && (
-                  <div className="absolute inset-0 pointer-events-none z-20">
-                    {/* Laser Line */}
-                    <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FF3D3D] to-transparent shadow-[0_0_15px_#FF3D3D] laser-beam"></div>
-                    
-                    {/* Telemetry Grid Overlay */}
-                    <div className="absolute inset-0 bg-[radial-gradient(#FF3D3D_1px,transparent_1px)] [background-size:20px_20px] opacity-15"></div>
-
-                    {/* Top-left Telemetry HUD readout */}
-                    <div className="absolute top-3 left-3 bg-[#09090b]/80 border border-[#D32F2F]/40 p-2 rounded backdrop-blur-md font-mono-custom text-[10px] text-[#e2e8f0] space-y-0.5">
-                      <div className="text-[#FBC02D] font-bold">LIVE TELEMETRY READOUT</div>
-                      <div>FPS: <span className="text-emerald-400 font-bold">60.0</span> | STATUS: <span className="text-emerald-400 font-bold">OPTIMAL</span></div>
-                      <div>LATENCY: <span className="text-emerald-400 font-bold">12ms</span> | AI ENGINE: <span className="text-emerald-400 font-bold">READY</span></div>
-                    </div>
-                  </div>
-                )}
-
-                {/* MODE 2: NODES - Interactive Map Target Pins */}
-                {nexusMode === 'nodes' && (
-                  <div className="absolute inset-0 z-20">
-                    {nexusNodes.map((node) => {
-                      const isSelected = activeNode?.id === node.id;
-                      return (
-                        <div
-                          key={node.id}
-                          style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                          onClick={() => setActiveNode(isSelected ? null : node)}
-                          className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group/pin"
-                        >
-                          {/* Pulse Ring */}
-                          <div className="absolute inset-0 rounded-full bg-[#F57C00] animate-ping opacity-75"></div>
-
-                          {/* Node Target Pin Button */}
-                          <div className={`relative w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
-                            isSelected
-                              ? 'bg-[#FF3D3D] border-white scale-125 shadow-[0_0_20px_#FF3D3D]'
-                              : 'bg-[#09090b]/90 border-[#F57C00] hover:scale-110 text-[#FBC02D]'
-                          }`}>
-                            <span className="material-symbols-outlined text-sm">
-                              {node.icon}
-                            </span>
-                          </div>
-
-                          {/* Node Label Tooltip */}
-                          <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2.5 bg-[#09090b]/95 border border-[#F57C00] rounded-lg shadow-2xl backdrop-blur-md transition-all ${
-                            isSelected ? 'opacity-100 scale-100 z-30' : 'opacity-0 scale-95 pointer-events-none group-hover/pin:opacity-100 group-hover/pin:scale-100'
-                          }`}>
-                            <div className="font-display text-xs font-bold text-white">{node.label}</div>
-                            <div className="font-mono-custom text-[10px] text-[#FBC02D] font-bold mt-0.5">{node.metric}</div>
-                            <p className="font-body text-[11px] text-[#cbd5e1] mt-1 leading-tight">{node.detail}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* MODE 3: SPECTRUM - Cyber Grid Overlay */}
-                {nexusMode === 'spectrum' && (
-                  <div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
-                    <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-                    
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-48 h-48 rounded-full border border-[#FF3D3D]/40 animate-spin" style={{ animationDuration: '12s' }}></div>
-                      <div className="absolute w-36 h-36 rounded-full border border-[#FBC02D]/40 animate-ping opacity-30"></div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Top-Right Badge Indicator */}
-                <div className="absolute top-3 right-3 z-20 bg-[#09090b]/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[#27272a] flex items-center gap-2 shadow-lg">
-                  <span className="w-2 h-2 rounded-full bg-[#00E676] animate-pulse"></span>
-                  <span className="font-mono-custom text-[11px] text-[#00E676] font-bold">ENGINE v4.8</span>
-                </div>
-
-                {/* Bottom Interactive Floating Telemetry Bar */}
-                <div className="absolute bottom-3 left-3 right-3 z-20 bg-[#121214]/90 backdrop-blur-md p-3.5 rounded-xl border border-[#27272a] flex items-center justify-between shadow-2xl">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#D32F2F]/20 text-[#FF3D3D] flex items-center justify-center border border-[#D32F2F]/30 shadow-inner">
-                      <span className="material-symbols-outlined text-xl">rocket_launch</span>
-                    </div>
-                    <div>
-                      <div className="font-display text-xs font-bold text-white flex items-center gap-1.5">
-                        <span>SaaS Growth Architecture</span>
-                        <span className="font-mono-custom text-[10px] text-[#FBC02D] bg-[#27272a] px-1.5 py-0.5 rounded">HYPER-GROWTH</span>
-                      </div>
-                      <div className="font-mono-custom text-[11px] text-[#cbd5e1] mt-0.5">
-                        Desarrollo + Tráfico + Monetización AI
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="px-3.5 py-2 bg-[#27272a] hover:bg-[#D32F2F] text-[#FBC02D] hover:text-white font-mono-custom text-[11px] font-bold rounded-lg transition-all flex items-center gap-1.5 shadow"
-                  >
-                    <span>Ampliar</span>
-                    <span className="material-symbols-outlined text-xs">fullscreen</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+      <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center relative z-10">
+        {/* Copy column */}
+        <div className="space-y-7 relative z-20 order-1 min-w-0">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1c20] border border-[#333338]">
+            <span className="w-2 h-2 rounded-full bg-[#FF3D3D] motion-safe:animate-pulse"></span>
+            <span className="font-mono-custom text-xs text-[#FBC02D] font-bold tracking-widest uppercase">
+              ESCALIA Growth Studio
+            </span>
           </div>
 
-          {/* Lead Paragraph with High Legibility */}
-          <p className="font-body text-lg md:text-xl text-[#ffffff] max-w-xl leading-relaxed font-medium">
-            No desarrollamos software solamente. Construimos <strong className="text-[#ffffff] font-bold underline decoration-[#FF3D3D] underline-offset-4">productos <span className="whitespace-nowrap">SaaS</span> orientados a automatizar y digitalizar el negocio para su crecimiento y escalamiento.</strong>
+          <h1 className="font-display text-4xl sm:text-5xl xl:text-6xl font-black text-white tracking-tight leading-[1.05]">
+            Convertimos tu negocio en un <span className="fire-text">producto SaaS</span> que escala
+          </h1>
+
+          <p className="font-body text-lg md:text-xl text-[#e2e8f0] max-w-xl leading-relaxed">
+            Del diagnóstico al producto en línea y al crecimiento: automatizamos y digitalizamos tu operación con software, IA y estrategia de adquisición, como socio y no solo como proveedor.
           </p>
 
-          {/* Prominent SaaS Definition Card at Top of Page */}
-          <div className="bg-[#121215] border border-[#27272a] hover:border-[#3f3f46] p-5 rounded-xl max-w-xl space-y-2.5 text-left shadow-xl backdrop-blur-md transition-all">
-            <div className="flex items-center gap-2 text-[#FBC02D]">
-              <span className="material-symbols-outlined text-base">cloud_done</span>
-              <span className="font-mono-custom text-xs uppercase font-bold tracking-wider">
-                ¿Qué es un producto tipo SaaS?
-              </span>
-            </div>
-            <p className="font-body text-xs sm:text-sm text-[#e2e8f0] leading-relaxed">
-              Un producto tipo <strong className="text-white font-bold">SaaS</strong> significa que es un <strong className="text-[#60a5fa] font-semibold">Software como Servicio (Software as a Service)</strong>. Es un producto que usa programas con automatizaciones e IA integrados a través de internet. <span className="text-[#ffffff] font-medium">Completamente en línea</span>, por lo que no tienes que instalar nada en tu computadora o laptop. Pagas una cuota mensual, trimestral o anual para entrar al sistema desde un navegador Web (Computadora, Laptop o Smartphone).
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="https://calendly.com/productosaas2026/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 fire-gradient text-[#ffffff] font-mono-custom text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 transition-all shadow-xl hover:shadow-[#D32F2F]/40 cursor-pointer group transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center px-8 py-4 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 transition-all shadow-xl hover:shadow-[#D32F2F]/40 group motion-safe:hover:-translate-y-0.5"
             >
-              <span className="material-symbols-outlined mr-2 text-lg">calendar_month</span>
-              <span>Agendar Cita en Calendly</span>
-              <span className="material-symbols-outlined ml-2 text-base group-hover:translate-x-1 transition-transform">
-                open_in_new
-              </span>
+              <span className="material-symbols-outlined mr-2 text-lg" aria-hidden="true">calendar_month</span>
+              <span>Agendar diagnóstico gratis</span>
+              <span className="sr-only"> (abre Calendly en una pestaña nueva)</span>
+              <span className="material-symbols-outlined ml-2 text-base group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</span>
             </a>
 
             <a
               href="#canales"
-              className="inline-flex items-center justify-center px-7 py-4 bg-[#18181b] border border-[#27272a] text-[#FBC02D] hover:text-[#ffffff] font-mono-custom text-xs font-semibold uppercase tracking-wider rounded-lg hover:bg-[#27272a] hover:border-[#FBC02D]/50 transition-all cursor-pointer"
+              className="inline-flex items-center justify-center px-7 py-4 bg-[#18181b] border border-[#3f3f46] text-[#FBC02D] hover:text-white font-mono-custom text-xs font-semibold uppercase tracking-wider rounded-lg hover:bg-[#27272a] hover:border-[#FBC02D]/50 transition-all"
             >
-              Explorar 4 Canales
+              Explorar los 4 canales
             </a>
           </div>
 
-          {/* Value Highlights Grid */}
-          <div className="pt-6 grid grid-cols-3 gap-4 border-t border-[#27272a] max-w-lg">
-            <div className="flex flex-col space-y-1">
-              <span className="font-display text-2xl font-bold text-[#ffffff]">4 Canales</span>
-              <span className="font-mono-custom text-[11px] text-[#cbd5e1] font-medium">
-                Estrategia Multi-Nivel
-              </span>
+          <dl className="pt-6 grid grid-cols-3 gap-4 border-t border-[#27272a] max-w-lg">
+            <div>
+              <dt className="font-mono-custom text-xs text-[#cbd5e1]">Estrategia multi-nivel</dt>
+              <dd className="font-display text-2xl font-bold text-white">4 Canales</dd>
             </div>
-            <div className="flex flex-col space-y-1">
-              <span className="font-display text-2xl font-bold text-[#FF8A00]">Discovery</span>
-              <span className="font-mono-custom text-[11px] text-[#cbd5e1] font-medium">
-                Validación Pre-Código
-              </span>
+            <div>
+              <dt className="font-mono-custom text-xs text-[#cbd5e1]">Validación pre-código</dt>
+              <dd className="font-display text-2xl font-bold text-[#FF8A00]">Discovery</dd>
             </div>
-            <div className="flex flex-col space-y-1">
-              <span className="font-display text-2xl font-bold text-[#FBC02D]">Growth</span>
-              <span className="font-mono-custom text-[11px] text-[#cbd5e1] font-medium">
-                Socio a Resultados
-              </span>
+            <div>
+              <dt className="font-mono-custom text-xs text-[#cbd5e1]">Socio a resultados</dt>
+              <dd className="font-display text-2xl font-bold text-[#FBC02D]">Growth</dd>
             </div>
-          </div>
+          </dl>
+
+          <details className="group max-w-xl bg-[#121215] border border-[#27272a] rounded-xl p-4 open:border-[#3f3f46]">
+            <summary className="flex items-center gap-2 cursor-pointer list-none text-[#FBC02D] font-mono-custom text-xs uppercase font-bold tracking-wider">
+              <span className="material-symbols-outlined text-base" aria-hidden="true">cloud_done</span>
+              ¿Qué es un producto tipo SaaS?
+              <span className="material-symbols-outlined text-base ml-auto group-open:rotate-180 transition-transform" aria-hidden="true">expand_more</span>
+            </summary>
+            <p className="font-body text-sm text-[#e2e8f0] leading-relaxed mt-3">
+              SaaS significa <strong className="text-white">Software como Servicio</strong>: un sistema con automatizaciones e IA que usas por internet, sin instalar nada. Pagas una cuota mensual, trimestral o anual y entras desde el navegador de tu computadora, laptop o smartphone.
+            </p>
+          </details>
+        </div>
+
+        {/* Visual column */}
+        <div className="order-2 relative z-20 min-w-0">
+            {/* Dynamic Interactive "Nexus Evolution Active" Artwork (Placed Before Lead Paragraph) */}
+            <div className="relative perspective-1000">
+            
+              {/* Outer glowing aura */}
+              <div className={`absolute inset-0 rounded-2xl z-0 blur-3xl transition-opacity duration-500 ${
+                nexusMode === 'spectrum' ? 'opacity-80 neon-border-pulse bg-gradient-to-tr from-[#FF3D3D] via-[#FF8A00] to-[#FBC02D]' : 'opacity-40 bg-gradient-to-tr from-[#D32F2F] to-[#F57C00]'
+              }`}></div>
+
+              {/* Interactive Card Container with 3D Tilt */}
+              <div
+                ref={cardRef}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  transform: isHovered
+                    ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.02, 1.02, 1.02)`
+                    : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+                  transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
+                }}
+                className="relative z-10 rounded-2xl overflow-hidden border border-[#3f3f46] bg-[#121214] shadow-2xl group select-none"
+              >
+                {/* Dynamic Glare Reflection Overlay */}
+                {isHovered && (
+                  <div
+                    className="absolute inset-0 pointer-events-none z-30 transition-opacity duration-300"
+                    style={{
+                      background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%)`
+                    }}
+                  ></div>
+                )}
+
+                {/* Interactive Mode Control Bar Header */}
+                <div className="bg-[#18181b]/90 backdrop-blur-md px-4 py-2.5 border-b border-[#27272a] flex items-center justify-between relative z-20">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#00E676] animate-pulse"></span>
+                    <span className="font-mono-custom text-xs font-bold text-[#00E676] tracking-wider uppercase">
+                      NEXUS EVOLUTION ACTIVE
+                    </span>
+                  </div>
+
+                  {/* Mode Switcher Buttons */}
+                  <div className="flex items-center gap-1 bg-[#09090b] p-1 rounded-lg border border-[#27272a]">
+                    <button
+                      onClick={() => setNexusMode('scanner')}
+                      aria-pressed={nexusMode === 'scanner'}
+                      className={`px-2.5 py-1 rounded text-xs font-mono-custom font-semibold transition-all flex items-center gap-1 ${
+                        nexusMode === 'scanner'
+                          ? 'bg-[#D32F2F] text-white shadow'
+                          : 'text-[#a1a1aa] hover:text-white'
+                      }`}
+                      title="Activar escáner holográfico"
+                    >
+                      <span className="material-symbols-outlined text-xs">radar</span>
+                      <span>Escáner</span>
+                    </button>
+
+                    <button
+                      onClick={() => setNexusMode('nodes')}
+                      aria-pressed={nexusMode === 'nodes'}
+                      className={`px-2.5 py-1 rounded text-xs font-mono-custom font-semibold transition-all flex items-center gap-1 ${
+                        nexusMode === 'nodes'
+                          ? 'bg-[#F57C00] text-white shadow'
+                          : 'text-[#a1a1aa] hover:text-white'
+                      }`}
+                      title="Explorar nodos de arquitectura"
+                    >
+                      <span className="material-symbols-outlined text-xs">adjust</span>
+                      <span>Nodos</span>
+                    </button>
+
+                    <button
+                      onClick={() => setNexusMode('spectrum')}
+                      aria-pressed={nexusMode === 'spectrum'}
+                      className={`px-2.5 py-1 rounded text-xs font-mono-custom font-semibold transition-all flex items-center gap-1 ${
+                        nexusMode === 'spectrum'
+                          ? 'bg-[#FBC02D] text-[#0A0A0A] font-bold shadow'
+                          : 'text-[#a1a1aa] hover:text-white'
+                      }`}
+                      title="Modo Cyber Spectrum"
+                    >
+                      <span className="material-symbols-outlined text-xs">graphic_eq</span>
+                      <span>Matrix</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Main Image Showcase with Canvas & Interactive Overlays */}
+                <div className="relative overflow-hidden aspect-[16/10] sm:aspect-[16/9]">
+                  {/* Background Base Image */}
+                  <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKvBAnwaNvs6v9kCNV95yMMtUYZcS7MgTPPwR3kLn_8szDA_eQkGIQCrmDIPqy8KuZ2sLtFxAwmeiE2eIUE6euzsA1Y2Cc0xocXo4IT8G9kE7cLYsrWyTmPOBi7i3fNSh-JZgGxxyivYtnShF190eKYnfR430jmDCc5C7FriQgiKPYxdwOGXqt5dH44fNed0RRDPb02prYh-YLZO-1BdkGKcjqEpxRlSzannGdhXE8MwaW_J89N92L7w"
+                    alt="NEXUS EVOLUTION - Hyper-Growth Initiative Studio"
+                    className={`w-full h-full object-cover transition-all duration-700 ${
+                      nexusMode === 'spectrum' ? 'filter contrast-125 saturate-150 brightness-90' : 'brightness-95'
+                    }`}
+                    loading="eager"
+                  />
+
+                  {/* Particle Canvas Overlay */}
+                  <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0 pointer-events-none z-10 w-full h-full"
+                  />
+
+                  {/* MODE 1: SCANNER - Holographic Laser Beam Sweep */}
+                  {nexusMode === 'scanner' && (
+                    <div className="absolute inset-0 pointer-events-none z-20">
+                      {/* Laser Line */}
+                      <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FF3D3D] to-transparent shadow-[0_0_15px_#FF3D3D] laser-beam"></div>
+                    
+                      {/* Telemetry Grid Overlay */}
+                      <div className="absolute inset-0 bg-[radial-gradient(#FF3D3D_1px,transparent_1px)] [background-size:20px_20px] opacity-15"></div>
+
+                      {/* Top-left Telemetry HUD readout */}
+                      <div className="absolute top-3 left-3 bg-[#09090b]/80 border border-[#D32F2F]/40 p-2 rounded backdrop-blur-md font-mono-custom text-xs text-[#e2e8f0] space-y-0.5">
+                        <div className="text-[#FBC02D] font-bold">VISTA DE ARQUITECTURA</div>
+                        <div>ESTADO: <span className="text-emerald-400 font-bold">ACTIVO</span></div>
+                        <div>MOTOR IA: <span className="text-emerald-400 font-bold">LISTO</span></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MODE 2: NODES - Interactive Map Target Pins */}
+                  {nexusMode === 'nodes' && (
+                    <div className="absolute inset-0 z-20">
+                      {nexusNodes.map((node) => {
+                        const isSelected = activeNode?.id === node.id;
+                        return (
+                          <div
+                            key={node.id}
+                            style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                            onClick={() => setActiveNode(isSelected ? null : node)}
+                            className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group/pin"
+                          >
+                            {/* Pulse Ring */}
+                            <div className="absolute inset-0 rounded-full bg-[#F57C00] animate-ping opacity-75"></div>
+
+                            {/* Node Target Pin Button */}
+                            <div className={`relative w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                              isSelected
+                                ? 'bg-[#FF3D3D] border-white scale-125 shadow-[0_0_20px_#FF3D3D]'
+                                : 'bg-[#09090b]/90 border-[#F57C00] hover:scale-110 text-[#FBC02D]'
+                            }`}>
+                              <span className="material-symbols-outlined text-sm">
+                                {node.icon}
+                              </span>
+                            </div>
+
+                            {/* Node Label Tooltip */}
+                            <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2.5 bg-[#09090b]/95 border border-[#F57C00] rounded-lg shadow-2xl backdrop-blur-md transition-all ${
+                              isSelected ? 'opacity-100 scale-100 z-30' : 'opacity-0 scale-95 pointer-events-none group-hover/pin:opacity-100 group-hover/pin:scale-100'
+                            }`}>
+                              <div className="font-display text-xs font-bold text-white">{node.label}</div>
+                              <div className="font-mono-custom text-xs text-[#FBC02D] font-bold mt-0.5">{node.metric}</div>
+                              <p className="font-body text-[11px] text-[#cbd5e1] mt-1 leading-tight">{node.detail}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* MODE 3: SPECTRUM - Cyber Grid Overlay */}
+                  {nexusMode === 'spectrum' && (
+                    <div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+                      <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                    
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-48 h-48 rounded-full border border-[#FF3D3D]/40 animate-spin" style={{ animationDuration: '12s' }}></div>
+                        <div className="absolute w-36 h-36 rounded-full border border-[#FBC02D]/40 animate-ping opacity-30"></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Top-Right Badge Indicator */}
+                  <div className="absolute top-3 right-3 z-20 bg-[#09090b]/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[#27272a] flex items-center gap-2 shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-[#00E676] animate-pulse"></span>
+                    <span className="font-mono-custom text-[11px] text-[#00E676] font-bold">NEXUS ENGINE</span>
+                  </div>
+
+                  {/* Bottom Interactive Floating Telemetry Bar */}
+                  <div className="absolute bottom-3 left-3 right-3 z-20 bg-[#121214]/90 backdrop-blur-md p-3.5 rounded-xl border border-[#27272a] flex items-center justify-between shadow-2xl">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#D32F2F]/20 text-[#FF3D3D] flex items-center justify-center border border-[#D32F2F]/30 shadow-inner">
+                        <span className="material-symbols-outlined text-xl">rocket_launch</span>
+                      </div>
+                      <div>
+                        <div className="font-display text-xs font-bold text-white flex items-center gap-1.5">
+                          <span>SaaS Growth Architecture</span>
+                          <span className="font-mono-custom text-xs text-[#FBC02D] bg-[#27272a] px-1.5 py-0.5 rounded">HYPER-GROWTH</span>
+                        </div>
+                        <div className="font-mono-custom text-[11px] text-[#cbd5e1] mt-0.5">
+                          Desarrollo + Tráfico + Monetización AI
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="px-3.5 py-2 bg-[#27272a] hover:bg-[#D32F2F] text-[#FBC02D] hover:text-white font-mono-custom text-[11px] font-bold rounded-lg transition-all flex items-center gap-1.5 shadow"
+                    >
+                      <span>Ampliar</span>
+                      <span className="material-symbols-outlined text-xs">fullscreen</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
 
       {/* Fullscreen Interactive Nexus Showcase Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-300">
+        <div role="dialog" aria-modal="true" aria-label="Nexus Evolution Interactive Engine" onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false); }} className="fixed inset-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-300">
           <div className="bg-[#121214] border border-[#3f3f46] rounded-2xl max-w-4xl w-full p-6 md:p-8 shadow-2xl relative space-y-6 overflow-hidden">
             {/* Modal Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
+              aria-label="Cerrar"
               className="absolute top-4 right-4 text-[#cbd5e1] hover:text-white p-2 rounded-lg bg-[#18181b] border border-[#27272a]"
             >
               <span className="material-symbols-outlined">close</span>
@@ -586,4 +622,3 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
     </section>
   );
 };
-

@@ -8,13 +8,13 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('canales');
+  const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 
-      const sections = ['servicios', 'canales', 'portafolio', 'nosotros', 'contacto'];
+      const sections = ['canales', 'servicios', 'fundadores', 'contacto'];
       const scrollPos = window.scrollY + 100;
 
       for (const section of sections) {
@@ -30,24 +30,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'Servicios', href: '#servicios', id: 'servicios' },
     { name: 'Canales', href: '#canales', id: 'canales' },
-    { name: 'Portafolio', href: '#portafolio', id: 'portafolio' },
-    { name: 'Nosotros', href: '#contacto', id: 'nosotros' }
+    { name: 'Servicios', href: '#servicios', id: 'servicios' },
+    { name: 'Fundadores', href: '#fundadores', id: 'fundadores' },
+    { name: 'Contacto', href: '#contacto', id: 'contacto' }
   ];
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-[#0A0A0A]/95 backdrop-blur-md shadow-2xl border-b border-[#27272a] py-3.5' : 'bg-[#0A0A0A]/85 backdrop-blur-md border-b border-[#27272a]/80 py-4.5'
+      scrolled ? 'bg-[#0A0A0A]/95 backdrop-blur-md shadow-2xl border-b border-[#27272a] py-3.5' : 'bg-[#0A0A0A]/85 backdrop-blur-md border-b border-[#27272a]/80 py-4'
     }`}>
       <div className="flex justify-between items-center px-6 sm:px-10 lg:px-16 max-w-[1400px] mx-auto">
         {/* Brand Logo with generous right margin */}
-        <a href="#" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-6 lg:pr-12">
+        <a href="#" aria-label="ESCALIA, inicio" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-6 lg:pr-12">
           <EscaliaLogo variant="dark" />
         </a>
 
@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
             rel="noopener noreferrer"
             className="px-6 py-2.5 fire-gradient text-[#ffffff] font-mono-custom text-xs uppercase tracking-wider rounded-lg hover:brightness-110 transition-all duration-300 shadow-xl font-bold flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
           >
-            <span>Agendar Cita</span>
+            <span>Agendar Cita</span><span className="sr-only"> (abre Calendly)</span>
             <span className="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -88,7 +88,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden text-[#ffffff] p-2 rounded-lg bg-[#18181b] border border-[#27272a] hover:bg-[#27272a] transition-colors"
-          aria-label="Toggle menu"
+          aria-label="Abrir o cerrar menú"
+          aria-expanded={mobileMenuOpen}
         >
           <span className="material-symbols-outlined text-xl">
             {mobileMenuOpen ? 'close' : 'menu'}

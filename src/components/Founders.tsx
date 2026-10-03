@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tilt3D } from './Tilt3D';
 
 interface Founder {
   name: string;
@@ -48,10 +49,10 @@ export const Founders: React.FC = () => {
 
         {/* Founders Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-          {FOUNDERS.map((founder) => (
+          {FOUNDERS.map((founder, i) => (
+            <Tilt3D key={founder.name} delay={i * 150}>
             <div
-              key={founder.name}
-              className="bg-[#121214] p-8 rounded-xl border border-[#27272a] hover:border-[#D32F2F]/60 transition-colors flex flex-col items-center text-center space-y-4"
+              className="h-full bg-[#121214] p-8 rounded-xl border border-[#27272a] hover:border-[#D32F2F]/60 transition-colors flex flex-col items-center text-center space-y-4"
             >
               <div className="inline-flex h-72 max-w-full rounded-xl overflow-hidden border-2 border-[#FBC02D]/40">
                 <img
@@ -68,6 +69,7 @@ export const Founders: React.FC = () => {
               </div>
               <p className="font-body text-sm text-[#cbd5e1] leading-relaxed">{founder.description}</p>
             </div>
+            </Tilt3D>
           ))}
         </div>
       </div>
