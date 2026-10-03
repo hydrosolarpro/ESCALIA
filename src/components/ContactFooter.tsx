@@ -42,7 +42,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
   };
 
   return (
-    <footer className="bg-[#0A0A0A] border-t border-[#2A2A2A] pt-24 pb-12 px-5 md:px-20 relative overflow-hidden" id="contacto">
+    <footer className="bg-[#0A0A0A]/80 border-t border-[#2A2A2A] pt-24 pb-12 px-5 md:px-20 relative overflow-hidden" id="contacto">
       {/* Background radial highlight */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#D32F2F]/5 rounded-full blur-3xl pointer-events-none"></div>
 

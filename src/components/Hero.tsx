@@ -217,7 +217,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
   };
 
   return (
-    <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 px-5 md:px-20 min-h-screen flex items-center overflow-hidden bg-[#0A0A0A]">
+    <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 px-5 md:px-20 min-h-screen flex items-center overflow-hidden">
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#D32F2F]/15 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/3 right-10 w-[500px] h-[500px] bg-[#F57C00]/15 rounded-full blur-[140px] pointer-events-none"></div>
 

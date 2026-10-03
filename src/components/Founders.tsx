@@ -27,7 +27,7 @@ const FOUNDERS: Founder[] = [
 
 export const Founders: React.FC = () => {
   return (
-    <section className="py-24 px-5 md:px-20 bg-[#0e0e0e] border-y border-[#2A2A2A]" id="fundadores">
+    <section className="py-24 px-5 md:px-20 bg-[#0e0e0e]/75 border-y border-[#2A2A2A]" id="fundadores">
       <div className="max-w-[1280px] mx-auto">
         {/* Header */}
         <div className="mb-16 text-center space-y-4">

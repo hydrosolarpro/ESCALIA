@@ -10,7 +10,7 @@ interface FourChannelsProps {
 
 export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onOpenAppointment }) => {
   return (
-    <section className="py-24 px-5 md:px-20 bg-[#0A0A0A] overflow-hidden" id="canales">
+    <section className="py-24 px-5 md:px-20 overflow-hidden" id="canales">
       <div className="max-w-[1280px] mx-auto">
         {/* Section Header */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">

@@ -40,7 +40,7 @@ export const ValuePropCarousel: React.FC<ValuePropCarouselProps> = ({ onSelectCh
   };
 
   return (
-    <section className="relative py-14 md:py-16 bg-[#131313] overflow-hidden border-b border-[#2A2A2A]">
+    <section className="relative py-14 md:py-16 bg-[#131313]/70 overflow-hidden border-b border-[#2A2A2A]">
       <div className="max-w-[1280px] mx-auto px-5 md:px-20">
         
         {/* Carousel Header Controls */}

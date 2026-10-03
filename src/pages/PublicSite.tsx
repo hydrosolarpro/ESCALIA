@@ -7,6 +7,7 @@ import { TransversalPortfolio } from '../components/TransversalPortfolio';
 import { Founders } from '../components/Founders';
 import { ContactFooter } from '../components/ContactFooter';
 import { ChannelDetailModal } from '../components/ChannelDetailModal';
+import { BackgroundRelief } from '../components/BackgroundRelief';
 import { Toast } from '../components/Toast';
 import { Channel } from '../types';
 
@@ -24,7 +25,9 @@ export const PublicSite: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#e5e2e1] font-body selection:bg-[#D32F2F] selection:text-white">
+    <div className="relative isolate min-h-screen text-[#e5e2e1] font-body selection:bg-[#D32F2F] selection:text-white">
+      <BackgroundRelief />
+
       {/* Navigation Bar */}
       <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded">Saltar al contenido</a>
       <Navbar

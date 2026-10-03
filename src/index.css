@@ -169,3 +169,28 @@ html { scroll-padding-top: 5rem; }
   .tilt3d-pre { opacity: 1; transform: none; }
   .cube { animation: none !important; }
 }
+
+/* ---------- 3D relief background ---------- */
+.bg-relief-layer { opacity: 0.36; mix-blend-mode: screen; }
+.bg-grid-floor-wrap {
+  perspective: 420px;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 85%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 85%);
+}
+.bg-grid-floor {
+  position: absolute; left: -50%; right: -50%; bottom: -10%; height: 140%;
+  transform: rotateX(68deg);
+  transform-origin: 50% 100%;
+  background-image:
+    linear-gradient(rgba(255,138,0,0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,138,0,0.35) 1px, transparent 1px);
+  background-size: 70px 70px;
+  animation: gridFlow 6s linear infinite;
+}
+@keyframes gridFlow {
+  from { background-position: 0 0; }
+  to { background-position: 0 70px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-grid-floor { animation: none; }
+}
