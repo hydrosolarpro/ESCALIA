@@ -254,11 +254,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl xl:text-6xl font-black text-white tracking-tight leading-[1.05]">
-            Convertimos tu negocio en un <span className="fire-text">producto SaaS</span> que escala
+            Convertimos tu negocio en un <span className="fire-text">producto digital y automatizado</span> que escala
           </h1>
 
           <p className="font-body text-lg md:text-xl text-[#e2e8f0] max-w-xl leading-relaxed">
-            Del diagnóstico al producto en línea y al crecimiento: automatizamos y digitalizamos tu operación con software, IA y estrategia de adquisición, como socio y no solo como proveedor.
+            Del diagnóstico a tu negocio en línea y al crecimiento: automatizamos y digitalizamos tu operación con software, IA y estrategia de adquisición, para que puedas escalar tu negocio.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
