@@ -212,3 +212,65 @@ $$;
 grant execute on function public.keepalive_ping() to anon, authenticated;
 
 comment on function public.keepalive_ping() is 'SELECT 1 usado por /api/keepalive (cron diario de Vercel) para evitar que Supabase pause el proyecto por inactividad.';
+
+-- =========================================================
+-- 6. AGENDA DE CITAS DEL CHATBOT (api/chat.ts)
+-- =========================================================
+-- Ejecuta esta sección en Supabase Dashboard > SQL Editor (es idempotente).
+--
+-- Diseño:
+--  * La tabla NO tiene políticas para anon/authenticated públicos: el único que
+--    escribe es el backend (/api/chat) con la clave service_role, que se salta RLS.
+--    Así nadie puede leer correos/teléfonos de otros ni reservar saltándose las reglas.
+--  * La exclusión por rango (EXCLUDE ... &&) hace que la BASE DE DATOS rechace
+--    cualquier cita que se solape con otra confirmada, incluso si dos personas
+--    reservan en el mismo milisegundo. Es la garantía real de "no cruzar citas".
+--  * Los administradores (is_admin) pueden ver, editar y cancelar desde Supabase
+--    o desde un futuro panel.
+
+create table if not exists public.appointments (
+  id uuid primary key default gen_random_uuid(),
+  starts_at timestamptz not null,
+  ends_at timestamptz not null,
+  full_name text not null,
+  email text not null,
+  phone text,
+  topic text,
+  status text not null default 'confirmada' check (status in ('confirmada', 'cancelada')),
+  source text not null default 'chatbot',
+  created_at timestamptz not null default now(),
+  constraint appointments_valid_range check (ends_at > starts_at),
+  constraint appointments_no_overlap
+    exclude using gist (tstzrange(starts_at, ends_at) with &&) where (status = 'confirmada')
+);
+
+comment on table public.appointments is 'Citas de diagnóstico agendadas por el chatbot. Para liberar un horario, cambia status a cancelada.';
+
+create index if not exists appointments_starts_at_idx on public.appointments (starts_at);
+create index if not exists appointments_email_idx on public.appointments (email);
+
+alter table public.appointments enable row level security;
+
+drop policy if exists "admins can read appointments" on public.appointments;
+create policy "admins can read appointments"
+  on public.appointments for select
+  to authenticated
+  using (public.is_admin());
+
+drop policy if exists "admins can update appointments" on public.appointments;
+create policy "admins can update appointments"
+  on public.appointments for update
+  to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
+
+drop policy if exists "admins can delete appointments" on public.appointments;
+create policy "admins can delete appointments"
+  on public.appointments for delete
+  to authenticated
+  using (public.is_admin());
+
+-- Las citas del chatbot también se registran como lead en el mini-CRM.
+alter table public.leads drop constraint if exists leads_source_check;
+alter table public.leads add constraint leads_source_check
+  check (source in ('web_form', 'calendly', 'manual', 'whatsapp_interes', 'chatbot'));

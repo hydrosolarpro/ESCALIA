@@ -49,7 +49,7 @@ export interface CalculationResult {
 }
 
 /** Mini-CRM: origen de un lead */
-export type LeadSource = 'web_form' | 'calendly' | 'manual' | 'whatsapp_interes';
+export type LeadSource = 'web_form' | 'calendly' | 'manual' | 'whatsapp_interes' | 'chatbot';
 
 /** Mini-CRM: estado del lead dentro del embudo comercial */
 export type LeadStatus = 'nuevo' | 'contactado' | 'en_negociacion' | 'stand_by' | 'ganado' | 'perdido';

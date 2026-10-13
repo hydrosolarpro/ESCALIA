@@ -9,6 +9,7 @@ import { ContactFooter } from '../components/ContactFooter';
 import { ChannelDetailModal } from '../components/ChannelDetailModal';
 import { BackgroundRelief } from '../components/BackgroundRelief';
 import { Toast } from '../components/Toast';
+import { ChatWidget } from '../components/ChatWidget';
 import { Channel } from '../types';
 
 export const PublicSite: React.FC = () => {
@@ -76,6 +77,9 @@ export const PublicSite: React.FC = () => {
           handleOpenAppointment();
         }}
       />
+
+      {/* Agente virtual de atención + agenda de citas */}
+      <ChatWidget />
 
       {/* Global Toast Notification */}
       <Toast

@@ -34,6 +34,7 @@ const SOURCE_LABELS: Record<string, string> = {
   calendly: 'Calendly',
   manual: 'Registro Manual',
   whatsapp_interes: 'Interés WhatsApp',
+  chatbot: 'Chatbot (cita agendada)',
 };
 
 const emptyForm: LeadInsert = {
