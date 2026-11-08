@@ -40,6 +40,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     span: 'md:col-span-2',
     details: 'Análisis cohortes, A/B Testing continuo, diseño de onboarding con baja fricción y estrategias de monetización orientadas a reducir el Churn Rate.',
     capabilities: ['A/B Experiments', 'Retention Funnels', 'PLG (Product-Led Growth)', 'LTV Expansion']
+  },
+  {
+    id: 'virtual-office-3d',
+    title: 'Oficina Virtual 3D con Sistemas Agénticos',
+    description: 'Plataforma inmersiva que fusiona la productividad empresarial con la gestión inteligente de agentes con IA.',
+    icon: 'view_in_ar',
+    color: '#F57C00',
+    span: 'md:col-span-2',
+    details: 'Desarrollo de plataforma inmersiva que fusiona la productividad empresarial con la gestión inteligente de agentes con IA, permitiendo a los equipos colaborar desde cualquier parte del mundo dentro de un entorno digital de vanguardia.',
+    capabilities: ['Entorno 3D inmersivo', 'Agentes con IA', 'Colaboración remota global', 'Productividad de equipos']
   }
 ];
 
