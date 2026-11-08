@@ -285,15 +285,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
           <dl className="pt-6 grid grid-cols-3 gap-4 border-t border-[#27272a] max-w-lg">
             <div>
               <dt className="font-mono-custom text-xs text-[#cbd5e1]">Estrategia multi-nivel</dt>
-              <dd className="font-display text-2xl font-bold text-white">4 Canales</dd>
+              <dd className="font-display text-lg sm:text-2xl font-bold text-white">4 Canales</dd>
             </div>
             <div>
               <dt className="font-mono-custom text-xs text-[#cbd5e1]">Validación pre-código</dt>
-              <dd className="font-display text-2xl font-bold text-[#FF8A00]">Discovery</dd>
+              <dd className="font-display text-lg sm:text-2xl font-bold text-[#FF8A00]">Discovery</dd>
             </div>
             <div>
               <dt className="font-mono-custom text-xs text-[#cbd5e1]">Socio a resultados</dt>
-              <dd className="font-display text-2xl font-bold text-[#FBC02D]">Growth</dd>
+              <dd className="font-display text-lg sm:text-2xl font-bold text-[#FBC02D]">Growth</dd>
             </div>
           </dl>
 

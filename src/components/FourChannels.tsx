@@ -1,6 +1,7 @@
 import React from 'react';
 import { CHANNELS_DATA } from '../data/channelsData';
 import { Tilt3D } from './Tilt3D';
+import { ChannelsStack3D } from './ChannelsStack3D';
 import { Channel } from '../types';
 
 interface FourChannelsProps {
@@ -10,7 +11,7 @@ interface FourChannelsProps {
 
 export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onOpenAppointment }) => {
   return (
-    <section className="py-24 px-5 md:px-20 overflow-hidden" id="canales">
+    <section className="py-24 px-5 md:px-20 overflow-x-clip" id="canales">
       <div className="max-w-[1280px] mx-auto">
         {/* Section Header */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -38,6 +39,11 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
           </button>
         </div>
 
+        {/* 3D stack: the four channels as layers of one scaling stack */}
+        <div className="mb-24">
+          <ChannelsStack3D onSelectChannel={onSelectChannel} />
+        </div>
+
         {/* 2x2 Grid of Channels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {CHANNELS_DATA.map((channel, i) => {
@@ -50,28 +56,30 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectChannel(channel); } }}
                 onClick={() => onSelectChannel(channel)}
-                className={`h-full p-8 rounded-xl border transition-all duration-300 group flex flex-col justify-between cursor-pointer relative overflow-hidden ${
+                className={`card-3d h-full p-8 rounded-xl border transition-[border-color,background-color,box-shadow] duration-300 group flex flex-col justify-between cursor-pointer relative ${
                   isHotCard
-                    ? 'bg-[#18181b] border-[#3f3f46] card-hot hover:border-[#F57C00] shadow-2xl'
+                    ? 'bg-[#18181b] border-[#3f3f46] card-hot hover:border-[#F57C00]'
                     : 'bg-[#121214] border-[#27272a] hover:border-[#D32F2F]/60 hover:bg-[#18181b]'
                 }`}
               >
-                {/* Background graphic for Hot Card */}
+                {/* Background graphic for Hot Card (clipped on its own layer so the card can keep real 3D depth) */}
                 {isHotCard && (
-                  <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                    <span className="material-symbols-outlined text-9xl text-[#FF3D3D]">
-                      trending_up
-                    </span>
+                  <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                      <span className="material-symbols-outlined text-9xl text-[#FF3D3D]">
+                        trending_up
+                      </span>
+                    </div>
                   </div>
                 )}
 
-                <div className="relative z-10 flex flex-col h-full">
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between mb-6">
+                <div className="relative z-10 flex flex-col h-full [transform-style:preserve-3d]">
+                  {/* Card Header: icon and code float in front of the card face */}
+                  <div className="flex items-start justify-between mb-6 [transform-style:preserve-3d]">
                     <div
-                      className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${
+                      className={`inline-flex items-center justify-center w-12 h-12 rounded-lg [transform:translateZ(44px)] ${
                         isHotCard ? 'bg-[#D32F2F]/20 text-[#FF3D3D]' : 'bg-[#27272a] text-[#ffffff]'
-                      } transition-all group-hover:scale-110 duration-300 shadow-inner`}
+                      } shadow-[0_14px_22px_-8px_rgba(0,0,0,0.75)]`}
                       style={{ color: isHotCard ? '#FF3D3D' : channel.color }}
                     >
                       <span className="material-symbols-outlined text-2xl">
@@ -80,7 +88,7 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
                     </div>
 
                     <span
-                      className={`font-mono-custom text-xs uppercase tracking-wider font-bold px-2.5 py-1 rounded bg-[#09090b] border ${
+                      className={`font-mono-custom text-xs uppercase tracking-wider font-bold px-2.5 py-1 rounded bg-[#09090b] border [transform:translateZ(28px)] ${
                         isHotCard ? 'text-[#FF3D3D] border-[#D32F2F]/40' : 'text-[#FBC02D] border-[#27272a]'
                       }`}
                     >

@@ -170,6 +170,59 @@ html { scroll-padding-top: 5rem; }
   .cube { animation: none !important; }
 }
 
+/* ---------- Depth system ---------- */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Cards keep real 3D depth: children can sit in front of the face. Shadow has offset + blur. */
+.card-3d {
+  transform-style: preserve-3d;
+  box-shadow: 0 26px 40px -22px rgba(0, 0, 0, 0.75), 0 2px 0 rgba(255, 255, 255, 0.03) inset;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-3d:hover {
+    box-shadow: 0 34px 50px -22px rgba(211, 47, 47, 0.35), 0 2px 0 rgba(255, 255, 255, 0.05) inset;
+  }
+}
+
+/* Pressable things answer the press */
+.cta-press,
+a.fire-gradient,
+button.fire-gradient {
+  transition: transform 160ms var(--ease-out), filter 200ms ease, box-shadow 200ms ease;
+}
+.cta-press:active,
+a.fire-gradient:active,
+button.fire-gradient:active {
+  transform: scale(0.97);
+}
+
+/* Copy that swaps with the active stack layer: enter-only, short, ease-out */
+@keyframes stackCopyIn {
+  from { opacity: 0; transform: translateY(10px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.stack-copy-in { animation: stackCopyIn 320ms var(--ease-out) both; }
+
+@media (hover: hover) and (pointer: fine) {
+  .stack-slab:hover { filter: brightness(1.12); }
+}
+.stack-slab:focus-visible { outline-offset: 6px; }
+
+/* Browser surfaces themed from the palette */
+::selection { background: #D32F2F; color: #fff; }
+html { scrollbar-color: #3f3f46 #0A0A0A; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 6px; border: 2px solid #0A0A0A; }
+::-webkit-scrollbar-thumb:hover { background: #F57C00; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-copy-in { animation: none; }
+}
+
 /* ---------- 3D relief background ---------- */
 .bg-relief-layer { opacity: 0.36; mix-blend-mode: screen; }
 .bg-grid-floor-wrap {
