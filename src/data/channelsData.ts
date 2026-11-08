@@ -25,9 +25,9 @@ export const CHANNELS_DATA: Channel[] = [
           description: 'Tus clientes piden en minutos y siguen al repartidor en el mapa; tú gestionas pedidos, repartidores y pagos validados desde un solo panel.',
           features: ['Seguimiento en vivo del repartidor', 'Pago al recibir: Yape, Plin o efectivo', 'Ingreso con teléfono y PIN de 4 dígitos', 'Panel del dueño: pedidos, repartidores y pagos'],
           brandColor: '#0891b2',
-          url: 'https://gas-agua.vercel.app/ingresar?rol=dueno',
-          ctaLabel: 'Acceso para dueños de negocio',
-          ctaNote: 'Ingresa con tu enlace de invitación'
+          url: 'https://gas-agua.vercel.app/registro-dueno',
+          ctaLabel: 'Registrar mi negocio',
+          ctaNote: 'Registro en 1 minuto · ¿Ya tienes cuenta? Ingresa desde el mismo enlace'
         }
       },
       {
