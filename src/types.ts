@@ -1,3 +1,27 @@
+/** App/producto publicado dentro de un canal (con enlace de acceso). */
+export interface ChannelApp {
+  name: string;
+  tagline: string;
+  description: string;
+  features: string[];
+  /** Imagen de portada (la misma de su página web). Opcional. */
+  image?: string;
+  /** Color de marca para el degradado cuando no hay imagen. */
+  brandColor: string;
+  url: string;
+  ctaLabel: string;
+  /** Texto pequeño bajo el botón, ej. "15 días de DEMO". */
+  ctaNote?: string;
+}
+
+/** Familia de negocios dentro de un canal (ej. Pedidos y repartos). */
+export interface ChannelFamily {
+  title: string;
+  icon: string;
+  examples: string;
+  app?: ChannelApp;
+}
+
 export interface Channel {
   id: string;
   code: string;
@@ -11,6 +35,8 @@ export interface Channel {
   image: string;
   caseStudyTitle?: string;
   caseStudyMetrics?: string[];
+  families?: ChannelFamily[];
+  apps?: ChannelApp[];
 }
 
 export interface PortfolioItem {

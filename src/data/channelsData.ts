@@ -13,7 +13,29 @@ export const CHANNELS_DATA: Channel[] = [
     icon: 'apps',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwlC1_hPEDYuZU9Vtwvk4xOj5rxOccB9B-bWNIgiA5lNbhtL9tvBLJXOt17Gzl1fsoRKN9IzOOLi9bT-QxNu-LTarqavrXnXk2bWfd7HhCSifpph3McaMnPVc_UCJSkhd5Mm0CvVJV8JTHoMKVeG3bZo5WX6TAQG6COQjtFLDqPjukGVxlSMH_SuoBcuo1vR8EQHprqZ7-cYwnHAB7Gsg3pGht21Ep9N2tDWormgtlHSV62oMD5mbavQ',
     caseStudyTitle: 'App Sistema de retiro para negocios de comida rápida',
-    caseStudyMetrics: ['Sesiones Administrador & Clientes', 'Dashboard Ganancias & Pedidos en Tiempo Real', 'Google Auth / Supabase / GitHub / Vercel']
+    caseStudyMetrics: ['Sesiones Administrador & Clientes', 'Dashboard Ganancias & Pedidos en Tiempo Real', 'Google Auth / Supabase / GitHub / Vercel'],
+    families: [
+      {
+        title: 'Negocios de Pedidos y Repartos',
+        icon: 'local_shipping',
+        examples: 'Reparto de gas y/o agua a domicilio, gestión de comida rápida y/o restaurantes, venta de productos físicos y/o digitales y mucho más!',
+        app: {
+          name: 'AguaGasExpress',
+          tagline: 'Pedidos y reparto a domicilio en tiempo real',
+          description: 'Tus clientes piden en minutos y siguen al repartidor en el mapa; tú gestionas pedidos, repartidores y pagos validados desde un solo panel.',
+          features: ['Seguimiento en vivo del repartidor', 'Pago al recibir: Yape, Plin o efectivo', 'Ingreso con teléfono y PIN de 4 dígitos', 'Panel del dueño: pedidos, repartidores y pagos'],
+          brandColor: '#0891b2',
+          url: 'https://gas-agua.vercel.app/ingresar?rol=dueno',
+          ctaLabel: 'Acceso para dueños de negocio',
+          ctaNote: 'Ingresa con tu enlace de invitación'
+        }
+      },
+      {
+        title: 'Negocios de Citas y Reservas',
+        icon: 'event_available',
+        examples: 'Barberías, Spa y/o peluquerías, consultorios clínicos de todas las especialidades, psicólogos, gimnasios (Gym), nutricionistas, centros deportivos y mucho más!'
+      }
+    ]
   },
   {
     id: 'canal-02',
@@ -27,7 +49,31 @@ export const CHANNELS_DATA: Channel[] = [
     icon: 'storefront',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCCQnZz3w6gHyYN7zmfOhszVXEBxGTiepvo9iDhPjAX8CnOXp9we9ywdx7d2872QkoN7ktWw41G4QOlcduHMIVoXyWDdMOuqOzOHdf82CzV50_SfQLecSTCRA9HwZRVSHMdG938T8FnIDE2eeE7Owvzd65EG2PxlHk3TDjYboOUzwXM_T0zW1PN_lTEtdE5edZaX8EBMQPFX2_0RjWeIi0VeTzoLblhdBp0ekEo3b3hP83uMtcWXTBPNw',
     caseStudyTitle: 'SaaS Remesas Perú-Venezuela',
-    caseStudyMetrics: ['Multi-Operador Perú & Venezuela', 'Validación Automática & Reportes', 'Integración WhatsApp (wa.me) & Telegram']
+    caseStudyMetrics: ['Multi-Operador Perú & Venezuela', 'Validación Automática & Reportes', 'Integración WhatsApp (wa.me) & Telegram'],
+    apps: [
+      {
+        name: 'Remesas IA',
+        tagline: 'Remesas Perú, Colombia y Chile → Venezuela',
+        description: 'Plataforma para operar remesas con equipo multi-operador: validación de pagos en 2 pasos, tasa del día, ganancias y comisiones automáticas, y avisos a clientes por WhatsApp y Telegram.',
+        features: ['Sincronización instantánea entre operadores de ambos países', 'Estadísticas, gráficos y exportación a Excel y PDF', 'Notificaciones automáticas por Telegram y WhatsApp', 'Soporte técnico y asesorías en línea 24/7'],
+        image: 'https://remesas-peru-venezuela-saas.vercel.app/videos/video-flayer-remesas-ia-poster.jpg',
+        brandColor: '#F57C00',
+        url: 'https://wa.me/51960442025?text=' + encodeURIComponent('Hola, deseo ingresar a la plataforma Remesas IA con el DEMO gratuito de 15 días.'),
+        ctaLabel: 'Acceso gratis al DEMO',
+        ctaNote: '15 días de prueba · se activa por WhatsApp'
+      },
+      {
+        name: 'Hydrosolar IA',
+        tagline: 'Dimensionamiento de bombeo solar y sistemas fotovoltaicos',
+        description: 'Dimensiona sistemas de bombeo solar y fotovoltaicos en minutos, con cálculos en Python, verificación con IA, análisis financiero y reportes técnicos en PDF.',
+        features: ['Cálculo hidráulico y fotovoltaico automático', 'Verificación y ajustes con IA', 'Análisis financiero: VAN, TIR, ROI y payback', 'Gestión de proyectos y reportes PDF profesionales'],
+        image: 'https://hidrosolaria.vercel.app/og-image.png',
+        brandColor: '#FBC02D',
+        url: 'https://hidrosolaria.vercel.app/register',
+        ctaLabel: 'Acceso gratis al DEMO',
+        ctaNote: '15 días de prueba · sin tarjeta de crédito'
+      }
+    ]
   },
   {
     id: 'canal-03',

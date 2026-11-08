@@ -1,5 +1,65 @@
 import React from 'react';
-import { Channel } from '../types';
+import { Channel, ChannelApp } from '../types';
+
+const AppCard: React.FC<{ app: ChannelApp }> = ({ app }) => {
+  const [imgFailed, setImgFailed] = React.useState(false);
+  const showImage = app.image && !imgFailed;
+
+  return (
+    <div className="rounded-lg border border-[#2A2A2A] bg-[#0A0A0A] overflow-hidden">
+      <div
+        className="relative aspect-[16/7] flex items-end"
+        style={{ background: `linear-gradient(135deg, ${app.brandColor}33, #0A0A0A 70%)` }}
+      >
+        {showImage && (
+          <img
+            src={app.image}
+            alt={app.name}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={() => setImgFailed(true)}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
+        <div className="relative p-4">
+          <h6 className="font-display text-xl font-bold text-white">{app.name}</h6>
+          <p className="font-mono-custom text-xs font-semibold" style={{ color: app.brandColor }}>
+            {app.tagline}
+          </p>
+        </div>
+      </div>
+
+      <div className="p-4 space-y-4">
+        <p className="font-body text-sm text-[#e4beba] leading-relaxed">{app.description}</p>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {app.features.map((f) => (
+            <li key={f} className="flex items-start gap-2 font-body text-xs text-[#e5e2e1]">
+              <span className="material-symbols-outlined text-sm shrink-0" style={{ color: app.brandColor }}>
+                check_circle
+              </span>
+              {f}
+            </li>
+          ))}
+        </ul>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <a
+            href={app.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded hover:opacity-90 flex items-center justify-center gap-2"
+          >
+            <span>{app.ctaLabel}</span>
+            <span className="material-symbols-outlined text-xs">open_in_new</span>
+          </a>
+          {app.ctaNote && (
+            <span className="font-mono-custom text-[11px] text-[#e4beba] text-center sm:text-left">{app.ctaNote}</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface ChannelDetailModalProps {
   channel: Channel | null;
@@ -79,8 +139,43 @@ export const ChannelDetailModal: React.FC<ChannelDetailModalProps> = ({
           </p>
         </div>
 
+        {/* Familias de negocio (Canal 1) */}
+        {channel.families && (
+          <div className="space-y-4">
+            <h4 className="font-mono-custom text-xs text-[#e5e2e1] uppercase tracking-wider font-semibold">
+              Familias de negocio
+            </h4>
+            {channel.families.map((family) => (
+              <div key={family.title} className="p-5 bg-[#1c1b1b] rounded-lg border border-[#2A2A2A] space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 shrink-0 rounded bg-[#201f1f] flex items-center justify-center" style={{ color: channel.color }}>
+                    <span className="material-symbols-outlined text-xl">{family.icon}</span>
+                  </div>
+                  <div>
+                    <h5 className="font-display text-lg font-bold text-[#e5e2e1]">{family.title}</h5>
+                    <p className="font-body text-sm text-[#e4beba] leading-relaxed mt-1">{family.examples}</p>
+                  </div>
+                </div>
+                {family.app && <AppCard app={family.app} />}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Apps con acceso DEMO (Canal 2) */}
+        {channel.apps && (
+          <div className="space-y-4">
+            <h4 className="font-mono-custom text-xs text-[#e5e2e1] uppercase tracking-wider font-semibold">
+              Apps listas para usar
+            </h4>
+            {channel.apps.map((app) => (
+              <AppCard key={app.name} app={app} />
+            ))}
+          </div>
+        )}
+
         {/* Case Study / Metrics Example */}
-        {channel.caseStudyTitle && (
+        {channel.caseStudyTitle && !channel.families && !channel.apps && (
           <div className="p-5 bg-[#1c1b1b] rounded-lg border border-[#2A2A2A] space-y-3">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-[#F57C00]">insights</span>
