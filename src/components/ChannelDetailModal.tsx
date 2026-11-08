@@ -212,7 +212,7 @@ export const ChannelDetailModal: React.FC<ChannelDetailModalProps> = ({
             }}
             className="px-6 py-2.5 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded hover:opacity-90 flex items-center justify-center gap-2"
           >
-            <span>Iniciar Discovery para {channel.code}</span>
+            <span>Agendar una cita gratis y sin compromiso · {channel.code}</span>
             <span className="material-symbols-outlined text-xs">arrow_forward</span>
           </button>
         </div>

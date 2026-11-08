@@ -148,7 +148,7 @@ export const TransversalPortfolio: React.FC<TransversalPortfolioProps> = ({ onOp
                   }}
                   className="px-6 py-2 fire-gradient text-[#fff2f0] font-mono-custom text-xs uppercase font-bold rounded hover:opacity-90 flex items-center gap-2"
                 >
-                  <span>Solicitar Servicio</span>
+                  <span>Agendar una cita gratis y sin compromiso</span>
                   <span className="material-symbols-outlined text-xs">arrow_forward</span>
                 </button>
               </div>

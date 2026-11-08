@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
             rel="noopener noreferrer"
             className="px-6 py-2.5 fire-gradient text-[#ffffff] font-mono-custom text-xs uppercase tracking-wider rounded-lg hover:brightness-110 transition-all duration-300 shadow-xl font-bold flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
           >
-            <span>Agendar Cita</span><span className="sr-only"> (abre Calendly)</span>
+            <span>Agendar cita gratis<span className="hidden xl:inline"> y sin compromiso</span></span><span className="sr-only"> (abre Calendly)</span>
             <span className="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -126,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
               className="w-full py-3.5 fire-gradient text-[#ffffff] font-mono-custom text-xs uppercase tracking-wider rounded-lg text-center font-bold flex items-center justify-center gap-2 shadow-lg"
             >
               <span className="material-symbols-outlined text-sm">calendar_month</span>
-              <span>Agendar Cita en Calendly</span>
+              <span>Agendar una cita gratis y sin compromiso</span>
               <span className="material-symbols-outlined text-sm">open_in_new</span>
             </a>
           </div>

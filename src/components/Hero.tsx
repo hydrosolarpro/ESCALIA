@@ -269,7 +269,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
               className="inline-flex items-center justify-center px-8 py-4 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 transition-all shadow-xl hover:shadow-[#D32F2F]/40 group motion-safe:hover:-translate-y-0.5"
             >
               <span className="material-symbols-outlined mr-2 text-lg" aria-hidden="true">calendar_month</span>
-              <span>Agendar diagnóstico gratis</span>
+              <span>Agendar una cita gratis y sin compromiso</span>
               <span className="sr-only"> (abre Calendly en una pestaña nueva)</span>
               <span className="material-symbols-outlined ml-2 text-base group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</span>
             </a>
@@ -610,7 +610,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
                     }}
                     className="px-6 py-2.5 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 flex items-center gap-2 shadow-lg"
                   >
-                    <span>Agendar Discovery Nexus</span>
+                    <span>Agendar una cita gratis y sin compromiso</span>
                     <span className="material-symbols-outlined text-xs">arrow_forward</span>
                   </button>
                 </div>

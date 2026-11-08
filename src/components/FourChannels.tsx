@@ -33,7 +33,7 @@ export const FourChannels: React.FC<FourChannelsProps> = ({ onSelectChannel, onO
             onClick={onOpenAppointment}
             className="px-6 py-3.5 bg-[#18181b] border border-[#27272a] hover:border-[#D32F2F] text-[#FBC02D] hover:text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 self-start md:self-auto shadow-md"
           >
-            <span>Consultar Canal Adecuado</span>
+            <span>Agendar una cita gratis y sin compromiso</span>
             <span className="material-symbols-outlined text-base">arrow_forward</span>
           </button>
         </div>

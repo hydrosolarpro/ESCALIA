@@ -249,7 +249,7 @@ export const DiscoveryCalculatorModal: React.FC<DiscoveryCalculatorModalProps> =
             }}
             className="px-6 py-2.5 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded hover:opacity-90 flex items-center gap-2 shadow-lg"
           >
-            <span>Agendar Cita con esta Configuración</span>
+            <span>Agendar una cita gratis y sin compromiso</span>
             <span className="material-symbols-outlined text-xs">calendar_month</span>
           </button>
         </div>

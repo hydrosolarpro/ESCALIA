@@ -179,7 +179,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
                   className="inline-flex items-center justify-center px-6 py-3.5 bg-[#27272a] border border-[#D32F2F]/40 text-[#FBC02D] hover:text-white font-mono-custom text-xs uppercase tracking-wider rounded-xl hover:bg-[#D32F2F] transition-all font-bold shadow-md cursor-pointer"
                 >
                   <span className="material-symbols-outlined mr-2 text-base">calendar_month</span>
-                  Agendar Cita en Calendly
+                  Agendar una cita gratis y sin compromiso
                 </a>
               </div>
             </div>
@@ -230,7 +230,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
                 className="w-full flex items-center justify-center gap-2 px-8 py-4 fire-gradient text-white font-mono-custom text-xs font-bold uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-xl hover:shadow-[#FF3D3D]/30 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-base">calendar_month</span>
-                <span>Agendar Cita Directo en Calendly</span>
+                <span>Agendar una cita gratis y sin compromiso</span>
                 <span className="material-symbols-outlined text-base">open_in_new</span>
               </a>
             </div>
