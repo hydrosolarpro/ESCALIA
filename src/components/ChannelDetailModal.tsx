@@ -72,15 +72,38 @@ export const ChannelDetailModal: React.FC<ChannelDetailModalProps> = ({
   onClose,
   onOpenAppointment
 }) => {
+  const open = !!channel;
+
+  // Pantalla completa: bloquea el scroll del fondo y cierra con Escape
+  React.useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open, onClose]);
+
   if (!channel) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0A0A0A]/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="bg-[#131313] border border-[#2A2A2A] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative space-y-6">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${channel.code}: ${channel.title}`}
+      className="fixed inset-0 z-50 bg-[#0A0A0A] overflow-y-auto animate-in fade-in duration-200"
+    >
+      <div className="max-w-5xl mx-auto min-h-full px-5 sm:px-8 md:px-12 py-8 md:py-14 relative space-y-8">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#e4beba] hover:text-white p-2 rounded hover:bg-[#201f1f]"
+          aria-label="Cerrar"
+          className="fixed top-4 right-4 md:top-6 md:right-8 z-10 text-[#e4beba] hover:text-white p-3 rounded-full bg-[#201f1f] border border-[#2A2A2A] hover:bg-[#2a2a2a] cta-press"
         >
           <span className="material-symbols-outlined">close</span>
         </button>
@@ -109,7 +132,7 @@ export const ChannelDetailModal: React.FC<ChannelDetailModalProps> = ({
         </div>
 
         {/* Hero image preview */}
-        <div className="relative aspect-video rounded-lg overflow-hidden border border-[#2A2A2A]">
+        <div className="relative aspect-video md:aspect-[21/9] rounded-lg overflow-hidden border border-[#2A2A2A]">
           <img
             src={channel.image}
             alt={channel.title}
