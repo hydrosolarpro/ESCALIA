@@ -1,6 +1,6 @@
 {
-  "name": "ESCALIA Studio",
-  "description": "ESCALIA - SaaS Development & Growth Studio platform for building and scaling high-performance SaaS products.",
+  "name": "ESCALIA DUO Studio",
+  "description": "ESCALIA DUO - SaaS Development & Growth Studio platform for building and scaling high-performance SaaS products.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

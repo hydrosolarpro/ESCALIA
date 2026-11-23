@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EscaliaLogo } from './EscaliaLogo';
+import { EscaliaDuoLogo } from './EscaliaDuoLogo';
 
 interface NavbarProps {
   onOpenAppointment: () => void;
@@ -47,8 +47,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAppointment }) => {
     }`}>
       <div className="flex justify-between items-center px-6 sm:px-10 lg:px-16 max-w-[1400px] mx-auto">
         {/* Brand Logo with generous right margin */}
-        <a href="#" aria-label="ESCALIA, inicio" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-6 lg:pr-12">
-          <EscaliaLogo variant="dark" />
+        <a href="#" aria-label="ESCALIA DUO, inicio" className="flex items-center hover:opacity-90 transition-opacity cursor-pointer shrink-0 pr-6 lg:pr-12">
+          <EscaliaDuoLogo variant="dark" />
         </a>
 
         {/* Desktop Navigation Links with Spacious Breathing Room */}

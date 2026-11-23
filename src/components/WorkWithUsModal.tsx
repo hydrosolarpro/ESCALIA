@@ -29,7 +29,7 @@ export const WorkWithUsModal: React.FC<WorkWithUsModalProps> = ({ open, onClose,
 
     // Abrimos WhatsApp de forma síncrona dentro del gesto del usuario (click) para
     // que el navegador no lo bloquee como pop-up; el insert a Supabase corre en paralelo.
-    const waMessage = `Hola! Soy ${form.full_name}, experto en ${form.domain || 'un dominio de negocio'} y me interesa trabajar con ESCALIA Studio.`;
+    const waMessage = `Hola! Soy ${form.full_name}, experto en ${form.domain || 'un dominio de negocio'} y me interesa trabajar con ESCALIA DUO Studio.`;
     window.open(`https://wa.me/51960442025?text=${encodeURIComponent(waMessage)}`, '_blank', 'noopener,noreferrer');
 
     supabase
@@ -43,7 +43,7 @@ export const WorkWithUsModal: React.FC<WorkWithUsModalProps> = ({ open, onClose,
         product: form.domain || null,
         source: 'whatsapp_interes',
         status: 'nuevo',
-        notes: `Interesado en trabajar con ESCALIA como experto en: ${form.domain || 'No especificado'}`,
+        notes: `Interesado en trabajar con ESCALIA DUO como experto en: ${form.domain || 'No especificado'}`,
       })
       .then(({ error }) => {
         if (error) console.error('No se pudo registrar el lead:', error.message);
@@ -74,7 +74,7 @@ export const WorkWithUsModal: React.FC<WorkWithUsModalProps> = ({ open, onClose,
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E676]/10 border border-[#00E676]/30">
             <span className="w-2 h-2 rounded-full bg-[#00E676] animate-pulse"></span>
             <span className="font-mono-custom text-[11px] font-bold text-[#00E676] tracking-wider uppercase">
-              Red de Expertos ESCALIA
+              Red de Expertos ESCALIA DUO
             </span>
           </div>
           <h3 className="font-display text-2xl font-black text-white leading-tight">

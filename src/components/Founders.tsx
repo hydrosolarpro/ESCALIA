@@ -43,7 +43,7 @@ export const Founders: React.FC = () => {
           </h2>
 
           <p className="font-body text-base md:text-xl text-[#cbd5e1] max-w-2xl mx-auto leading-relaxed">
-            Las mentes detrás de ESCALIA Studio.
+            Las mentes detrás de ESCALIA DUO Studio.
           </p>
         </div>
 

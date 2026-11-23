@@ -111,7 +111,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue, usdToP
       `Resumen General — Ganancias por Canal (Ingresos + Leads Ganados, ${displayCurrency})`,
       ['Canal', `Total (${displayCurrency})`],
       revenueByChannel.map((r) => [r.name, currencyFmt(r.value)]),
-      'escalia-resumen-ingresos'
+      'escalia-duo-resumen-ingresos'
     );
   };
 
@@ -120,7 +120,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ leads, revenue, usdToP
       'Resumen',
       ['Canal', `Total (${displayCurrency})`],
       revenueByChannel.map((r) => [r.name, r.value]),
-      'escalia-resumen-ingresos'
+      'escalia-duo-resumen-ingresos'
     );
   };
 

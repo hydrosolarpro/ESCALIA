@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../lib/AuthContext';
-import { EscaliaLogo } from '../../components/EscaliaLogo';
+import { EscaliaDuoLogo } from '../../components/EscaliaDuoLogo';
 
 export const Login: React.FC = () => {
   const { session, isAdmin, signIn } = useAuth();
@@ -33,10 +33,10 @@ export const Login: React.FC = () => {
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-5 py-12">
       <div className="w-full max-w-sm space-y-8">
         <div className="flex flex-col items-center gap-4">
-          <EscaliaLogo variant="dark" />
+          <EscaliaDuoLogo variant="dark" />
           <div className="text-center space-y-1">
             <h1 className="font-display text-2xl font-black text-white">Panel Administrativo</h1>
-            <p className="font-body text-sm text-[#cbd5e1]">Acceso exclusivo para administradores de ESCALIA Studio</p>
+            <p className="font-body text-sm text-[#cbd5e1]">Acceso exclusivo para administradores de ESCALIA DUO Studio</p>
           </div>
         </div>
 

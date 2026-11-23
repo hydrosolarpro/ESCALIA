@@ -5,12 +5,12 @@ interface ChatMessage {
   content: string;
 }
 
-const STORAGE_KEY = 'escalia-chat-v1';
+const STORAGE_KEY = 'escalia-duo-chat-v1';
 
 const WELCOME: ChatMessage = {
   role: 'assistant',
   content:
-    '¡Hola! 👋 Soy el asistente virtual de ESCALIA. Puedo contarte cómo convertimos tu negocio en un producto digital y automatizado, y agendarte un diagnóstico gratis. ¿Qué te gustaría saber?',
+    '¡Hola! 👋 Soy el asistente virtual de ESCALIA DUO. Puedo contarte cómo convertimos tu negocio en un producto digital y automatizado, y agendarte un diagnóstico gratis. ¿Qué te gustaría saber?',
 };
 
 const QUICK_REPLIES = [
@@ -164,7 +164,7 @@ export const ChatWidget: React.FC = () => {
       {open && (
         <div
           role="dialog"
-          aria-label="Asistente virtual de ESCALIA"
+          aria-label="Asistente virtual de ESCALIA DUO"
           className="fixed z-[60] bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[390px] max-h-[min(640px,calc(100vh-8rem))] h-[560px] flex flex-col bg-[#0e0e11] border border-[#27272a] rounded-2xl shadow-2xl overflow-hidden"
         >
           <div className="flex items-center gap-3 px-4 py-3 bg-[#18181b] border-b border-[#27272a]">
@@ -172,7 +172,7 @@ export const ChatWidget: React.FC = () => {
               <span className="material-symbols-outlined text-xl" aria-hidden="true">smart_toy</span>
             </div>
             <div className="min-w-0 flex-1">
-              <div className="font-display text-sm font-bold text-white leading-tight">Asistente ESCALIA</div>
+              <div className="font-display text-sm font-bold text-white leading-tight">Asistente ESCALIA DUO</div>
               <div className="font-mono-custom text-[11px] text-[#00E676] flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00E676]" aria-hidden="true"></span>
                 En línea · Agenda tu diagnóstico gratis

@@ -249,7 +249,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1c20] border border-[#333338]">
             <span className="w-2 h-2 rounded-full bg-[#FF3D3D] motion-safe:animate-pulse"></span>
             <span className="font-mono-custom text-xs text-[#FBC02D] font-bold tracking-widest uppercase">
-              ESCALIA Growth Studio
+              ESCALIA DUO Growth Studio
             </span>
           </div>
 
@@ -544,7 +544,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenAppointment }) => {
                 <h3 className="font-display text-2xl font-black text-white">
                   Nexus Evolution Interactive Engine
                 </h3>
-                <span className="font-mono-custom text-xs text-[#FBC02D]">Arquitectura de Crecimiento Acelerado ESCALIA Studio</span>
+                <span className="font-mono-custom text-xs text-[#FBC02D]">Arquitectura de Crecimiento Acelerado ESCALIA DUO Studio</span>
               </div>
             </div>
 

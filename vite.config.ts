@@ -7,7 +7,7 @@ import {defineConfig, loadEnv, type Plugin} from 'vite';
 // api/chat.ts en /api/chat para poder probar el asistente en local.
 function devApiPlugin(): Plugin {
   return {
-    name: 'escalia-dev-api',
+    name: 'escalia-duo-dev-api',
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/api/chat', async (req, res) => {

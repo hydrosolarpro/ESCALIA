@@ -9,7 +9,7 @@ export const exportToPdf = (title: string, columns: string[], rows: (string | nu
 
   doc.setFontSize(16);
   doc.setTextColor(211, 47, 47);
-  doc.text('ESCALIA Studio', 14, 18);
+  doc.text('ESCALIA DUO Studio', 14, 18);
 
   doc.setFontSize(11);
   doc.setTextColor(40, 40, 40);
@@ -38,7 +38,7 @@ export const exportToExcel = async (
   fileName: string
 ) => {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'ESCALIA Studio';
+  workbook.creator = 'ESCALIA DUO Studio';
   workbook.created = new Date();
 
   const sheet = workbook.addWorksheet(sheetName);

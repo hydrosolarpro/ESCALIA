@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface EscaliaLogoProps {
+interface EscaliaDuoLogoProps {
   className?: string;
   variant?: 'light' | 'dark' | 'auto';
   showSubtitle?: boolean;
 }
 
-export const EscaliaLogo: React.FC<EscaliaLogoProps> = ({
+export const EscaliaDuoLogo: React.FC<EscaliaDuoLogoProps> = ({
   className = '',
   variant = 'dark',
   showSubtitle = true,
@@ -51,10 +51,10 @@ export const EscaliaLogo: React.FC<EscaliaLogoProps> = ({
       {/* Brand Name & Subtitle */}
       <div className="flex flex-col justify-center leading-none">
         <span
-          className="font-display font-black text-xl md:text-2xl tracking-tight"
+          className="font-display font-black text-xl md:text-2xl tracking-tight whitespace-nowrap"
           style={{ color: textColor, letterSpacing: '0.04em' }}
         >
-          ESCALIA
+          ESCALIA DUO
         </span>
         {showSubtitle && (
           <span

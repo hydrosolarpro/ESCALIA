@@ -1,4 +1,4 @@
--- ESCALIA Studio · Mini-CRM & Dashboard de Ingresos
+-- ESCALIA DUO Studio · Mini-CRM & Dashboard de Ingresos
 -- Ejecuta este script UNA VEZ en Supabase Dashboard > SQL Editor > New query > Run.
 -- Proyecto: productosaas2026@gmail.com's Project (joobdkwgtuavbomstthg)
 

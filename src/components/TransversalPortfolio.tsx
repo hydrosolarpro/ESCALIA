@@ -110,7 +110,7 @@ export const TransversalPortfolio: React.FC<TransversalPortfolioProps> = ({ onOp
                   <h3 className="font-display text-2xl font-bold text-[#e5e2e1]">
                     {selectedItem.title}
                   </h3>
-                  <span className="font-mono-custom text-xs text-[#FBC02D]">Capacidad Transversal ESCALIA</span>
+                  <span className="font-mono-custom text-xs text-[#FBC02D]">Capacidad Transversal ESCALIA DUO</span>
                 </div>
               </div>
 

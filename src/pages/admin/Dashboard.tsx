@@ -3,7 +3,7 @@ import { useAuth } from '../../lib/AuthContext';
 import { useLeads } from '../../hooks/useLeads';
 import { useRevenue } from '../../hooks/useRevenue';
 import { useSettings } from '../../hooks/useSettings';
-import { EscaliaLogo } from '../../components/EscaliaLogo';
+import { EscaliaDuoLogo } from '../../components/EscaliaDuoLogo';
 import { OverviewTab } from '../../components/admin/OverviewTab';
 import { LeadsTab } from '../../components/admin/LeadsTab';
 import { RevenueTab } from '../../components/admin/RevenueTab';
@@ -32,7 +32,7 @@ export const Dashboard: React.FC = () => {
       <header className="sticky top-0 z-40 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#27272a]">
         <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-4 flex items-center justify-between gap-4">
           <a href="/" className="shrink-0">
-            <EscaliaLogo variant="dark" />
+            <EscaliaDuoLogo variant="dark" />
           </a>
           <div className="hidden sm:block font-mono-custom text-[11px] text-[#71717a] truncate">
             {session?.user?.email}

@@ -92,7 +92,7 @@ export const DiscoveryCalculatorModal: React.FC<DiscoveryCalculatorModalProps> =
             <h3 className="font-display text-2xl font-bold text-[#e5e2e1]">
               Simulador &amp; Estimador SaaS
             </h3>
-            <span className="font-mono-custom text-xs text-[#FBC02D]">Calculadora de Tiempos y Canal ESCALIA</span>
+            <span className="font-mono-custom text-xs text-[#FBC02D]">Calculadora de Tiempos y Canal ESCALIA DUO</span>
           </div>
         </div>
 

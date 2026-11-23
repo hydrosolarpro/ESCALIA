@@ -94,13 +94,13 @@ export const RevenueTab: React.FC<RevenueTabProps> = ({ entries, addRevenue, upd
         <h2 className="font-display text-xl font-bold text-white">Registro de Ganancias</h2>
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => exportToPdf('Registro de Ganancias', COLUMNS, exportRows(), 'escalia-ingresos')}
+            onClick={() => exportToPdf('Registro de Ganancias', COLUMNS, exportRows(), 'escalia-duo-ingresos')}
             className="px-4 py-2 bg-[#18181b] border border-[#27272a] hover:border-[#D32F2F] text-[#FBC02D] text-xs font-mono-custom font-bold rounded-lg flex items-center gap-1.5 transition-colors"
           >
             <span className="material-symbols-outlined text-sm">picture_as_pdf</span> PDF
           </button>
           <button
-            onClick={() => exportToExcel('Ingresos', COLUMNS, exportRows(), 'escalia-ingresos')}
+            onClick={() => exportToExcel('Ingresos', COLUMNS, exportRows(), 'escalia-duo-ingresos')}
             className="px-4 py-2 bg-[#18181b] border border-[#27272a] hover:border-[#00E676] text-emerald-400 text-xs font-mono-custom font-bold rounded-lg flex items-center gap-1.5 transition-colors"
           >
             <span className="material-symbols-outlined text-sm">grid_on</span> Excel

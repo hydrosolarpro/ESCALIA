@@ -17,7 +17,7 @@ export const QuoteBanner: React.FC = () => {
         <div className="pt-2 flex items-center justify-center gap-3">
           <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#FF3D3D]"></div>
           <span className="font-mono-custom text-xs text-[#FBC02D] uppercase tracking-widest font-bold">
-            Filosofía ESCALIA Studio
+            Filosofía ESCALIA DUO Studio
           </span>
           <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#FF3D3D]"></div>
         </div>

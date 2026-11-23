@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DiscoveryFormState } from '../types';
-import { EscaliaLogo } from './EscaliaLogo';
+import { EscaliaDuoLogo } from './EscaliaDuoLogo';
 import { WorkWithUsModal } from './WorkWithUsModal';
 
 const SOCIAL_LINKS = [
@@ -18,7 +18,7 @@ const SOCIAL_LINKS = [
   },
   {
     name: 'Facebook',
-    handle: 'Escalia',
+    handle: 'Escalia Duo',
     href: 'https://web.facebook.com/profile.php?id=61595051743670',
     path: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z',
   },
@@ -105,7 +105,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               </div>
 
               <a
-                href="https://wa.me/51960442025?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA%20y%20sus%20productos%20para%20mi%20negocio"
+                href="https://wa.me/51960442025?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA DUO%20y%20sus%20productos%20para%20mi%20negocio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 text-[#cbd5e1] hover:text-white transition-colors cursor-pointer group p-3 rounded-xl hover:bg-[#121214] border border-transparent hover:border-[#27272a]"
@@ -120,7 +120,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
               </a>
 
               <a
-                href="https://wa.me/584121961606?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA%20y%20sus%20productos%20para%20mi%20negocio"
+                href="https://wa.me/584121961606?text=Hola!%2C%20requiero%20mas%20informaci%C3%B3n%20de%20ESCALIA DUO%20y%20sus%20productos%20para%20mi%20negocio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 text-[#cbd5e1] hover:text-white transition-colors cursor-pointer group p-3 rounded-xl hover:bg-[#121214] border border-transparent hover:border-[#27272a]"
@@ -145,7 +145,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
                 </div>
                 <div>
                   <div className="font-mono-custom text-[11px] text-[#e4beba] uppercase">Red Profesional</div>
-                  <div className="font-body text-base font-semibold text-[#e5e2e1]">LinkedIn ESCALIA</div>
+                  <div className="font-body text-base font-semibold text-[#e5e2e1]">LinkedIn ESCALIA DUO</div>
                 </div>
               </a>
 
@@ -158,7 +158,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Escalia en ${social.name}`}
+                      aria-label={`Escalia Duo en ${social.name}`}
                       title={`${social.name} ${social.handle}`}
                       className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#18181b] border border-[#27272a] text-[#cbd5e1] hover:text-white hover:border-[#FBC02D] hover:bg-[#27272a] transition-all"
                     >
@@ -240,11 +240,11 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
         {/* Footer Shared Bottom Component */}
         <div className="w-full py-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-[#353534]">
           <a href="#" className="opacity-90 hover:opacity-100 transition-opacity">
-            <EscaliaLogo variant="dark" />
+            <EscaliaDuoLogo variant="dark" />
           </a>
 
           <div className="text-[#e4beba] font-body text-sm text-center md:text-left">
-            © 2024 ESCALIA. De la idea al producto.
+            © 2024 ESCALIA DUO. De la idea al producto.
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm">
@@ -319,8 +319,8 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenAppointment,
             </h3>
             <p className="font-body text-sm text-[#e4beba] leading-relaxed">
               {activeLegalModal === 'privacy'
-                ? 'En ESCALIA Studio garantizamos el tratamiento confidencial de la información recolectada a través de nuestros canales de descubrimiento. Los datos solo se utilizan para evaluar requerimientos de software y establecer contacto profesional.'
-                : 'Todas las relaciones de desarrollo y Growth Partner con ESCALIA se rigen bajo acuerdos NDA y contratos formales de entrega por hitos o acuerdos de compensación sobre resultados.'}
+                ? 'En ESCALIA DUO Studio garantizamos el tratamiento confidencial de la información recolectada a través de nuestros canales de descubrimiento. Los datos solo se utilizan para evaluar requerimientos de software y establecer contacto profesional.'
+                : 'Todas las relaciones de desarrollo y Growth Partner con ESCALIA DUO se rigen bajo acuerdos NDA y contratos formales de entrega por hitos o acuerdos de compensación sobre resultados.'}
             </p>
             <div className="pt-4 flex justify-end">
               <button
